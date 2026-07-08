@@ -74,6 +74,15 @@ body::before {
 img {
   max-width: 100%;
   display: block;
+  /* Indispensable depuis que les <img> portent des attributs width/height :
+     ces attributs valent aussi « hint de présentation » et fixeraient la
+     hauteur en pixels. Avec une largeur imposée par ailleurs (width:100%),
+     les deux dimensions seraient contraintes et l'image serait déformée.
+     height:auto laisse le navigateur déduire la hauteur du ratio des
+     attributs — c'est ce qui réserve la place et supprime le décalage au
+     chargement. Les images à hauteur fixe (.logo img, .carte img,
+     .pied-logo) redéfinissent height, avec une spécificité supérieure. */
+  height: auto;
 }
 
 a {
