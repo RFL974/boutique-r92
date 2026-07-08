@@ -1,0 +1,10 @@
+# Génération R92 — https://github.com/RFL974/boutique-r92
+# Site vitrine d'association : tout est public, rien à cacher aux moteurs.
+
+User-agent: *
+Allow: /
+
+# La page d'erreur porte déjà <meta name="robots" content="noindex">.
+# Ligne « Sitemap: » à ajouter dès que l'association aura un domaine :
+# le format sitemap.xml exige des URL absolues.
+#   ./tools/definir-domaine.sh https://mon-domaine.fr
