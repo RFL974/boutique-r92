@@ -1,0 +1,26 @@
+# =========================================================
+# GÉNÉRATION R92 — Configuration Netlify
+# En-têtes de sécurité HTTP appliqués à tout le site une fois
+# déployé. Sans effet en local (le serveur python les ignore),
+# donc aucun impact sur le développement.
+#
+# Site 100 % statique : les seules ressources externes sont
+# Google Fonts (fonts.googleapis.com + fonts.gstatic.com).
+# La CSP autorise donc uniquement : le site lui-même ('self'),
+# ces deux domaines, et les styles « inline » (attributs style="…"
+# encore présents dans quelques pages).
+# =========================================================
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Empêche l'affichage du site dans une <iframe> tierce (anti-clickjacking).
+    X-Frame-Options = "DENY"
+    # Interdit au navigateur de « deviner » le type d'un fichier (anti MIME-sniffing).
+    X-Content-Type-Options = "nosniff"
+    # Ne transmet l'URL de provenance qu'en interne, jamais l'URL complète vers l'extérieur.
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    # Le site n'utilise ni géolocalisation, ni caméra, ni micro : on les désactive.
+    Permissions-Policy = "geolocation=(), camera=(), microphone=()"
+    # Politique de sécurité du contenu : liste blanche des sources autorisées.
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests"

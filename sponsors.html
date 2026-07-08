@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Génération R92 — Ils nous soutiennent</title>
+  <!-- Favicon de l'association (icône dans l'onglet du navigateur) -->
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/img/logo-r92.png">
+  <meta name="description" content="Ils nous soutiennent : Génération R92 remercie les partenaires qui soutiennent l'association et ses jeunes joueurs.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- ============ EN-TÊTE ============ -->
+  <header class="entete">
+    <div class="conteneur">
+      <a class="logo" href="index.html">
+        <img src="assets/img/logo-r92.png" alt="Génération R92">
+      </a>
+      <!-- Bouton hamburger (visible seulement sur mobile) -->
+      <button class="nav-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false">&#9776;</button>
+      <nav class="nav">
+        <a href="index.html">Accueil</a>
+        <!-- Menu déroulant "L'association" -->
+        <div class="menu-deroulant">
+          <button class="menu-deroulant-btn" type="button" aria-haspopup="true" aria-expanded="false">L'association</button>
+          <div class="menu-deroulant-contenu">
+            <a href="qui-sommes-nous.html">Qui sommes-nous</a>
+            <a href="nos-projets.html">Nos projets</a>
+            <a href="actualites.html">Actualités</a>
+          </div>
+        </div>
+        <!-- Menu déroulant "Nous soutenir" -->
+        <div class="menu-deroulant">
+          <button class="menu-deroulant-btn actif" type="button" aria-haspopup="true" aria-expanded="false">Nous soutenir</button>
+          <div class="menu-deroulant-contenu">
+            <a href="adhesion.html">Adhérer</a>
+            <a href="boutique.html">Boutique</a>
+            <a href="faire-un-don.html">Faire un don</a>
+            <a href="sponsors.html" class="actif">Ils nous soutiennent</a>
+            <a href="devenir-partenaire.html">Devenir partenaire</a>
+          </div>
+        </div>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Couche filigrane skyline continue (transparaît sur les sections blanches) -->
+  <div class="filigrane-page">
+    <img src="assets/img/hero-defense-watermark.png" alt="" aria-hidden="true">
+  </div>
+
+  <!-- ============ BANDEAU DE TITRE ============ -->
+  <section class="bandeau-titre">
+    <div class="conteneur">
+      <p class="sous-titre">Ils nous font confiance</p>
+      <h2 class="titre-section">Ils nous soutiennent</h2>
+      <p class="chapo">
+        Génération R92 avance grâce à celles et ceux qui croient en nos jeunes. Commerçants,
+        entreprises, familles : chaque soutien, quel qu'il soit, nous rapproche de notre objectif
+        et permet d'offrir à nos enfants des projets qu'ils n'oublieront jamais. À toutes celles
+        et ceux qui nous accompagnent : merci.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ GRILLE DES SPONSORS (depuis sponsors.json) ============ -->
+  <section class="section">
+    <div class="conteneur">
+      <p class="sous-titre">Merci à</p>
+      <h2 class="titre-section">Nos partenaires</h2>
+
+      <!-- Les cartes sont ajoutées automatiquement par le JavaScript,
+           à partir du fichier assets/data/sponsors.json. -->
+      <div class="grille" id="liste-sponsors">
+        <p class="message-info">Chargement des sponsors…</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ APPEL À DEVENIR PARTENAIRE ============ -->
+  <section class="section section-sombre">
+    <div class="conteneur">
+      <p class="sous-titre">Rejoignez-les</p>
+      <h2 class="titre-section">Devenez partenaire à votre tour</h2>
+      <p class="texte-large">
+        Vous dirigez une entreprise, un commerce, ou souhaitez associer votre nom à un projet à
+        forte utilité sociale ? Soutenir Génération R92, c'est investir dans l'éducation par le
+        sport et l'ouverture au monde de toute une génération — dans le cadre, pour les
+        entreprises, de votre démarche de responsabilité sociétale (RSE). Plusieurs formes de
+        soutien sont possibles, de la visibilité sur nos produits au partenariat sur-mesure.
+      </p>
+      <p style="margin-top:28px;">
+        <a class="btn btn-primaire btn-grand" href="devenir-partenaire.html">Devenir partenaire</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ PIED DE PAGE ============ -->
+  <footer class="pied">
+    <div class="conteneur">
+      <!-- Colonnes de liens (plan du site) -->
+      <div class="pied-colonnes">
+        <div class="pied-colonne">
+          <h4>L'association</h4>
+          <a href="index.html">Accueil</a>
+          <a href="qui-sommes-nous.html">Qui sommes-nous</a>
+          <a href="nos-projets.html">Nos projets</a>
+          <a href="actualites.html">Actualités</a>
+        </div>
+        <div class="pied-colonne">
+          <h4>Nous soutenir</h4>
+          <a href="adhesion.html">Adhérer</a>
+          <a href="boutique.html">Boutique</a>
+          <a href="faire-un-don.html">Faire un don</a>
+          <a href="sponsors.html">Ils nous soutiennent</a>
+          <a href="devenir-partenaire.html">Devenir partenaire</a>
+        </div>
+        <div class="pied-colonne">
+          <h4>Infos &amp; légal</h4>
+          <a href="contact.html">Contact</a>
+          <a href="faq.html">FAQ</a>
+          <a href="mentions-legales.html">Mentions légales</a>
+          <a href="cgv.html">CGV</a>
+          <a href="rgpd.html">RGPD</a>
+          <a href="statuts.html">Statuts</a>
+        </div>
+      </div>
+
+      <!-- Barre du bas : logo + contact + copyright -->
+      <div class="pied-bas">
+        <img class="pied-logo" src="assets/img/logo-r92.png" alt="Génération R92">
+        <p class="pied-contact">
+          <a href="mailto:generationr92@gmail.com">generationr92@gmail.com</a>
+          <span class="pied-sep">·</span>
+          <a href="https://instagram.com/generationr92" target="_blank" rel="noopener">Instagram @generationr92</a>
+        </p>
+        <p>© 2026 Génération R92 — Association de rugby, Hauts-de-Seine. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

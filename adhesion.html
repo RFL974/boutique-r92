@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Génération R92 — Adhésion</title>
+  <!-- Favicon de l'association (icône dans l'onglet du navigateur) -->
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/img/logo-r92.png">
+  <meta name="description" content="Adhérez à Génération R92 : accès aux sections, tarif adhérent sur la boutique et soutien aux projets de l'association.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- ============ EN-TÊTE ============ -->
+  <header class="entete">
+    <div class="conteneur">
+      <a class="logo" href="index.html">
+        <img src="assets/img/logo-r92.png" alt="Génération R92">
+      </a>
+      <!-- Bouton hamburger (visible seulement sur mobile) -->
+      <button class="nav-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false">&#9776;</button>
+      <nav class="nav">
+        <a href="index.html">Accueil</a>
+        <!-- Menu déroulant "L'association" -->
+        <div class="menu-deroulant">
+          <button class="menu-deroulant-btn" type="button" aria-haspopup="true" aria-expanded="false">L'association</button>
+          <div class="menu-deroulant-contenu">
+            <a href="qui-sommes-nous.html">Qui sommes-nous</a>
+            <a href="nos-projets.html">Nos projets</a>
+            <a href="actualites.html">Actualités</a>
+          </div>
+        </div>
+        <!-- Menu déroulant "Nous soutenir" -->
+        <div class="menu-deroulant">
+          <button class="menu-deroulant-btn actif" type="button" aria-haspopup="true" aria-expanded="false">Nous soutenir</button>
+          <div class="menu-deroulant-contenu">
+            <a href="adhesion.html" class="actif">Adhérer</a>
+            <a href="boutique.html">Boutique</a>
+            <a href="faire-un-don.html">Faire un don</a>
+            <a href="sponsors.html">Ils nous soutiennent</a>
+            <a href="devenir-partenaire.html">Devenir partenaire</a>
+          </div>
+        </div>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Couche filigrane skyline continue (transparaît sur les sections blanches) -->
+  <div class="filigrane-page">
+    <img src="assets/img/hero-defense-watermark.png" alt="" aria-hidden="true">
+  </div>
+
+  <!-- ============ BANDEAU DE TITRE ============ -->
+  <section class="bandeau-titre">
+    <div class="conteneur">
+      <p class="sous-titre">Nous soutenir</p>
+      <h2 class="titre-section">Adhérer à Génération R92</h2>
+      <p class="chapo">
+        Adhérer à Génération R92, c'est bien plus qu'une cotisation : c'est rejoindre une famille
+        Ciel &amp; Blanc et soutenir concrètement les projets de nos jeunes. Pour 20 € par an, vous
+        devenez membre à part entière de l'aventure.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ LES AVANTAGES DE L'ADHÉSION (4 cartes) ============ -->
+  <section class="section">
+    <div class="conteneur">
+      <p class="sous-titre">Pourquoi adhérer</p>
+      <h2 class="titre-section">Les avantages de l'adhésion</h2>
+
+      <!-- Grille de cartes : 4 avantages, disposés par paires (2 par ligne) -->
+      <div class="grille grille-paires">
+        <article class="carte carte-avantage">
+          <div class="carte-corps">
+            <h3>Membre actif avec droit de vote</h3>
+            <p>Participez à la vie démocratique de l'association et à ses décisions en assemblée
+              générale.</p>
+          </div>
+        </article>
+
+        <article class="carte carte-avantage">
+          <div class="carte-corps">
+            <h3>Accès privilégié</h3>
+            <p>Profitez d'un accès à certains événements de la saison réservés aux adhérents.</p>
+          </div>
+        </article>
+
+        <article class="carte carte-avantage">
+          <div class="carte-corps">
+            <h3>Tarif adhérent sur la boutique</h3>
+            <p>Bénéficiez d'une remise exclusive sur nos produits collector (par exemple, le
+              débardeur à 25 € au lieu de 30 €).</p>
+          </div>
+        </article>
+
+        <article class="carte carte-avantage">
+          <div class="carte-corps">
+            <h3>Soutenir nos projets</h3>
+            <p>Votre adhésion finance directement les voyages, animations et actions qui font
+              grandir nos jeunes.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LE TARIF ============ -->
+  <section class="section section-sombre">
+    <div class="conteneur">
+      <p class="sous-titre">Combien ça coûte</p>
+      <h2 class="titre-section">Le tarif</h2>
+      <p class="tarif-montant">20 € <span>par an et par adhérent</span></p>
+
+      <!-- Mention défiscalisation : réduction d'impôt de 66 % (association d'intérêt général) -->
+      <p class="tarif-defisc">
+        Génération R92 étant reconnue d'intérêt général, votre adhésion ouvre droit à une
+        <strong>réduction d'impôt de 66 %</strong> : elle ne vous coûte en réalité que
+        <strong>6,80 €</strong> par an après déduction. Un reçu fiscal vous est adressé.
+      </p>
+      <p class="ligne-discrete">
+        Sous réserve de votre situation fiscale. <a href="faire-un-don.html">En savoir plus sur les dons</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ COMMENT ADHÉRER ============ -->
+  <section class="section">
+    <div class="conteneur">
+      <p class="sous-titre">C'est simple</p>
+      <h2 class="titre-section">Comment adhérer</h2>
+      <p class="texte-large">
+        L'adhésion se fait en ligne, en quelques minutes, via notre page HelloAsso —
+        paiement 100 % sécurisé.
+      </p>
+
+      <!-- Bouton d'appel à l'action, bien visible.
+           Pointe vers "#" pour l'instant ; il recevra plus tard le lien HelloAsso. -->
+      <p style="margin-top:28px;">
+        <a class="btn btn-primaire btn-grand" href="#">Adhérer en ligne</a>
+      </p>
+
+      <!-- Ligne discrète vers la page Contact -->
+      <p class="ligne-discrete">
+        Une question avant d'adhérer ? <a href="contact.html">Contactez-nous</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ PIED DE PAGE ============ -->
+  <footer class="pied">
+    <div class="conteneur">
+      <!-- Colonnes de liens (plan du site) -->
+      <div class="pied-colonnes">
+        <div class="pied-colonne">
+          <h4>L'association</h4>
+          <a href="index.html">Accueil</a>
+          <a href="qui-sommes-nous.html">Qui sommes-nous</a>
+          <a href="nos-projets.html">Nos projets</a>
+          <a href="actualites.html">Actualités</a>
+        </div>
+        <div class="pied-colonne">
+          <h4>Nous soutenir</h4>
+          <a href="adhesion.html">Adhérer</a>
+          <a href="boutique.html">Boutique</a>
+          <a href="faire-un-don.html">Faire un don</a>
+          <a href="sponsors.html">Ils nous soutiennent</a>
+          <a href="devenir-partenaire.html">Devenir partenaire</a>
+        </div>
+        <div class="pied-colonne">
+          <h4>Infos &amp; légal</h4>
+          <a href="contact.html">Contact</a>
+          <a href="faq.html">FAQ</a>
+          <a href="mentions-legales.html">Mentions légales</a>
+          <a href="cgv.html">CGV</a>
+          <a href="rgpd.html">RGPD</a>
+          <a href="statuts.html">Statuts</a>
+        </div>
+      </div>
+
+      <!-- Barre du bas : logo + contact + copyright -->
+      <div class="pied-bas">
+        <img class="pied-logo" src="assets/img/logo-r92.png" alt="Génération R92">
+        <p class="pied-contact">
+          <a href="mailto:generationr92@gmail.com">generationr92@gmail.com</a>
+          <span class="pied-sep">·</span>
+          <a href="https://instagram.com/generationr92" target="_blank" rel="noopener">Instagram @generationr92</a>
+        </p>
+        <p>© 2026 Génération R92 — Association de rugby, Hauts-de-Seine. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

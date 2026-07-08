@@ -1,0 +1,20 @@
+[
+  {
+    "nom": "Le Grand Voyage",
+    "image": "grand-voyage.jpg",
+    "description": "Chaque saison, l'association finance un grand voyage de fin d'année pour ses jeunes joueurs : un projet éducatif, humain et citoyen qui les marque à vie.",
+    "page": "grand-voyage.html"
+  },
+  {
+    "nom": "Projet à venir",
+    "image": "",
+    "description": "D'autres projets Génération R92 sont en préparation. Revenez bientôt pour les découvrir.",
+    "page": ""
+  },
+  {
+    "nom": "Projet à venir",
+    "image": "",
+    "description": "D'autres projets Génération R92 sont en préparation. Revenez bientôt pour les découvrir.",
+    "page": ""
+  }
+]

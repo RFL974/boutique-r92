@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Génération R92 — Qui sommes-nous</title>
+  <!-- Favicon de l'association (icône dans l'onglet du navigateur) -->
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/img/logo-r92.png">
+  <meta name="description" content="Qui sommes-nous : Génération R92, association loi 1901 créée par les familles de l'École de Rugby du Racing 92.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- ============ EN-TÊTE ============ -->
+  <header class="entete">
+    <div class="conteneur">
+      <a class="logo" href="index.html">
+        <img src="assets/img/logo-r92.png" alt="Génération R92">
+      </a>
+      <!-- Bouton hamburger (visible seulement sur mobile) -->
+      <button class="nav-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false">&#9776;</button>
+      <nav class="nav">
+        <a href="index.html">Accueil</a>
+        <!-- Menu déroulant "L'association" -->
+        <div class="menu-deroulant">
+          <button class="menu-deroulant-btn actif" type="button" aria-haspopup="true" aria-expanded="false">L'association</button>
+          <div class="menu-deroulant-contenu">
+            <a href="qui-sommes-nous.html" class="actif">Qui sommes-nous</a>
+            <a href="nos-projets.html">Nos projets</a>
+            <a href="actualites.html">Actualités</a>
+          </div>
+        </div>
+        <!-- Menu déroulant "Nous soutenir" -->
+        <div class="menu-deroulant">
+          <button class="menu-deroulant-btn" type="button" aria-haspopup="true" aria-expanded="false">Nous soutenir</button>
+          <div class="menu-deroulant-contenu">
+            <a href="adhesion.html">Adhérer</a>
+            <a href="boutique.html">Boutique</a>
+            <a href="faire-un-don.html">Faire un don</a>
+            <a href="sponsors.html">Ils nous soutiennent</a>
+            <a href="devenir-partenaire.html">Devenir partenaire</a>
+          </div>
+        </div>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Couche filigrane skyline continue (transparaît sur les sections blanches) -->
+  <div class="filigrane-page">
+    <img src="assets/img/hero-defense-watermark.png" alt="" aria-hidden="true">
+  </div>
+
+  <!-- ============ CHAPÔ + SECTIONS À TITRE ============ -->
+  <!-- Bandeau de titre (dégradé navy) -->
+  <section class="bandeau-titre">
+    <div class="conteneur">
+      <p class="sous-titre">L'association</p>
+      <h2 class="titre-section">Qui sommes-nous&nbsp;?</h2>
+      <p class="chapo">
+        Génération R92 est une association loi 1901 créée par les familles de l'École de
+        Rugby du Racing 92. Elle rassemble parents, joueurs et partenaires autour d'un projet
+        commun : promouvoir les valeurs du rugby et du Racing 92, fédérer une communauté soudée
+        et offrir aux jeunes une expérience sportive et humaine inoubliable.
+      </p>
+    </div>
+  </section>
+
+  <!-- Mission + École : texte + emplacement photo -->
+  <section class="section">
+    <div class="conteneur presentation-accueil">
+      <div>
+        <h2 class="titre-section">Notre mission</h2>
+        <p class="texte-large">
+          Promouvoir les valeurs fondamentales du rugby — respect, solidarité et dépassement de
+          soi — en cohérence avec l'identité du Racing 92. Nous créons du lien entre les familles,
+          les joueurs et l'association à travers des événements fédérateurs qui font rayonner les couleurs
+          Ciel &amp; Blanc dans tout le département des Hauts-de-Seine. Et chaque saison, nous
+          finançons le voyage de fin d'année des U14.
+        </p>
+        <h2 class="titre-section titre-sous-section">Notre École de Rugby</h2>
+        <p class="texte-large">
+          L'association accompagne toutes les catégories de l'École de Rugby, des U6 aux U18, sur
+          les deux pôles : Colombes et Le Plessis-Robinson. Des centaines de jeunes qui partagent
+          les mêmes valeurs, les mêmes couleurs et la même passion du ballon ovale.
+          Génération R92, c'est leur famille élargie.
+        </p>
+      </div>
+      <img src="assets/img/equipe-qui-sommes-nous.jpg"
+           alt="L'équipe et les familles de Génération R92"
+           style="width:100%; border-radius:14px; box-shadow:var(--ombre);">
+
+    </div>
+  </section>
+
+  <!-- ============ BLOC "NOS VALEURS" (3 cartes) ============ -->
+  <section class="section section-sombre">
+    <div class="conteneur">
+      <p class="sous-titre">Ce qui nous rassemble</p>
+      <h2 class="titre-section">Nos valeurs</h2>
+
+      <!-- La grille passe automatiquement en 3 colonnes sur ordinateur
+           et en 1 colonne (cartes empilées) sur mobile. -->
+      <div class="grille grille-ligne">
+        <article class="carte carte-avantage">
+          <div class="carte-corps">
+            <h3>Respect</h3>
+            <p>Esprit d'équipe avant tout, fair-play et bienveillance, respect des adversaires,
+              écoute mutuelle.</p>
+          </div>
+        </article>
+
+        <article class="carte carte-avantage">
+          <div class="carte-corps">
+            <h3>Solidarité</h3>
+            <p>Une famille Ciel &amp; Blanc où parents, joueurs et staff sont unis ; chaque
+              contribution compte, ensemble on va plus loin.</p>
+          </div>
+        </article>
+
+        <article class="carte carte-avantage">
+          <div class="carte-corps">
+            <h3>Dépassement</h3>
+            <p>L'excellence sportive et l'ambition collective, des projets qui grandissent…
+              pour écrire leur légende.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BLOC "LE BUREAU" ============ -->
+  <section class="section">
+    <div class="conteneur">
+      <p class="sous-titre">Les bénévoles</p>
+      <h2 class="titre-section">Le bureau</h2>
+
+      <p class="chapo">
+        Derrière Génération R92, il y a des bénévoles passionnés qui donnent de leur temps pour
+        faire vivre l'association au quotidien. Parents avant tout, ils partagent une même
+        conviction : offrir à nos jeunes bien plus qu'un club de rugby.
+      </p>
+
+      <!-- 3 membres : côte à côte sur ordinateur, empilés sur mobile -->
+      <div class="grille grille-ligne">
+        <article class="carte carte-membre">
+          <div class="carte-corps">
+            <div class="membre-photo">JJ</div>
+            <h3>Jérémy Jost</h3>
+            <p class="membre-role">Président</p>
+            <p class="membre-citation">« [à compléter] »</p>
+          </div>
+        </article>
+
+        <article class="carte carte-membre">
+          <div class="carte-corps">
+            <div class="membre-photo">VC</div>
+            <h3>Vanessa Corcelle</h3>
+            <p class="membre-role">Trésorière</p>
+            <p class="membre-citation">« [à compléter] »</p>
+          </div>
+        </article>
+
+        <article class="carte carte-membre">
+          <div class="carte-corps">
+            <div class="membre-photo">GD</div>
+            <h3>Grégory Deterne</h3>
+            <p class="membre-role">Secrétaire général</p>
+            <p class="membre-citation">« [à compléter] »</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BLOC "LE MOT DU PRÉSIDENT" ============ -->
+  <section class="section">
+    <div class="conteneur">
+      <p class="sous-titre">Édito</p>
+      <h2 class="titre-section">Le mot du président</h2>
+
+      <!-- Mention provisoire, en attendant la version définitive -->
+      <p class="mention-provisoire">[Texte provisoire — en attente de la version définitive de Jérémy Jost]</p>
+
+      <!-- Citation mise en valeur -->
+      <blockquote class="citation-president">
+        <p>« Quand nous avons créé Génération R92, nous avions une idée simple : et si l'on faisait
+          de l'École de Rugby bien plus qu'un lieu où l'on apprend à jouer ? Un endroit où l'on
+          grandit, où l'on se dépasse, et où chaque famille se sent chez elle.</p>
+
+        <p>Aujourd'hui, ce sont des centaines de jeunes qui portent nos couleurs Ciel &amp; Blanc
+          avec fierté. Derrière chacun d'eux, il y a des parents, des éducateurs et des bénévoles
+          qui croient en la même chose : que le sport transmet des valeurs qui durent toute une
+          vie — le respect, la solidarité, le goût de l'effort.</p>
+
+        <p>Nos projets, nos voyages, nos événements n'ont qu'un but : offrir à nos enfants des
+          souvenirs inoubliables et l'envie de se dépasser ensemble. Rien de tout cela ne serait
+          possible sans vous.</p>
+
+        <p>Alors merci — et bienvenue dans l'aventure. »</p>
+
+        <p class="signature">Jérémy Jost, Président de Génération R92</p>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ============ PIED DE PAGE ============ -->
+  <footer class="pied">
+    <div class="conteneur">
+      <!-- Colonnes de liens (plan du site) -->
+      <div class="pied-colonnes">
+        <div class="pied-colonne">
+          <h4>L'association</h4>
+          <a href="index.html">Accueil</a>
+          <a href="qui-sommes-nous.html">Qui sommes-nous</a>
+          <a href="nos-projets.html">Nos projets</a>
+          <a href="actualites.html">Actualités</a>
+        </div>
+        <div class="pied-colonne">
+          <h4>Nous soutenir</h4>
+          <a href="adhesion.html">Adhérer</a>
+          <a href="boutique.html">Boutique</a>
+          <a href="faire-un-don.html">Faire un don</a>
+          <a href="sponsors.html">Ils nous soutiennent</a>
+          <a href="devenir-partenaire.html">Devenir partenaire</a>
+        </div>
+        <div class="pied-colonne">
+          <h4>Infos &amp; légal</h4>
+          <a href="contact.html">Contact</a>
+          <a href="faq.html">FAQ</a>
+          <a href="mentions-legales.html">Mentions légales</a>
+          <a href="cgv.html">CGV</a>
+          <a href="rgpd.html">RGPD</a>
+          <a href="statuts.html">Statuts</a>
+        </div>
+      </div>
+
+      <!-- Barre du bas : logo + contact + copyright -->
+      <div class="pied-bas">
+        <img class="pied-logo" src="assets/img/logo-r92.png" alt="Génération R92">
+        <p class="pied-contact">
+          <a href="mailto:generationr92@gmail.com">generationr92@gmail.com</a>
+          <span class="pied-sep">·</span>
+          <a href="https://instagram.com/generationr92" target="_blank" rel="noopener">Instagram @generationr92</a>
+        </p>
+        <p>© 2026 Génération R92 — Association de rugby, Hauts-de-Seine. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

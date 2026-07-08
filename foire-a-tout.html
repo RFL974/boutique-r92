@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Génération R92 — Foire à Tout du Plessis-Robinson</title>
+  <!-- Favicon de l'association (icône dans l'onglet du navigateur) -->
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/img/logo-r92.png">
+  <meta name="description" content="Le samedi 12 septembre 2026, Génération R92 tient un stand à la Foire à Tout du Plessis-Robinson. Donnez une seconde vie à vos objets au profit des projets de nos jeunes.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- ============ EN-TÊTE ============ -->
+  <header class="entete">
+    <div class="conteneur">
+      <a class="logo" href="index.html">
+        <img src="assets/img/logo-r92.png" alt="Génération R92">
+      </a>
+      <!-- Bouton hamburger (visible seulement sur mobile) -->
+      <button class="nav-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false">&#9776;</button>
+      <nav class="nav">
+        <a href="index.html">Accueil</a>
+        <!-- Menu déroulant "L'association" -->
+        <div class="menu-deroulant">
+          <button class="menu-deroulant-btn actif" type="button" aria-haspopup="true" aria-expanded="false">L'association</button>
+          <div class="menu-deroulant-contenu">
+            <a href="qui-sommes-nous.html">Qui sommes-nous</a>
+            <a href="nos-projets.html">Nos projets</a>
+            <a href="actualites.html" class="actif">Actualités</a>
+          </div>
+        </div>
+        <!-- Menu déroulant "Nous soutenir" -->
+        <div class="menu-deroulant">
+          <button class="menu-deroulant-btn" type="button" aria-haspopup="true" aria-expanded="false">Nous soutenir</button>
+          <div class="menu-deroulant-contenu">
+            <a href="adhesion.html">Adhérer</a>
+            <a href="boutique.html">Boutique</a>
+            <a href="faire-un-don.html">Faire un don</a>
+            <a href="sponsors.html">Ils nous soutiennent</a>
+            <a href="devenir-partenaire.html">Devenir partenaire</a>
+          </div>
+        </div>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Couche filigrane skyline continue (transparaît sur les sections blanches) -->
+  <div class="filigrane-page">
+    <img src="assets/img/hero-defense-watermark.png" alt="" aria-hidden="true">
+  </div>
+
+  <!-- Fil d'Ariane -->
+  <nav class="fil-ariane" aria-label="Fil d'Ariane">
+    <div class="conteneur">
+      <a href="index.html">Accueil</a><span class="sep">›</span><a href="actualites.html">Actualités</a><span class="sep">›</span><span class="actuel">Foire à Tout du Plessis-Robinson</span>
+    </div>
+  </nav>
+
+  <!-- ============ BANDEAU DE TITRE ============ -->
+  <section class="bandeau-titre">
+    <div class="conteneur">
+      <p class="sous-titre">Actualité · Événement</p>
+      <h2 class="titre-section">Foire à Tout du Plessis-Robinson</h2>
+
+      <p class="chapo">
+        Donnez une seconde vie à vos objets… et un coup de pouce à toute une génération ! Le
+        <strong>samedi 12 septembre 2026</strong>, l'association Génération R92 participe à la
+        Foire à Tout du Plessis-Robinson.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ NOTRE STAND : INTRO + LISTE DES DONS + AFFICHE ============ -->
+  <section class="section">
+    <div class="conteneur">
+      <!-- align-items:start : le texte s'aligne en haut de l'affiche (grand portrait), et la
+           liste des dons remplit la colonne pour équilibrer la hauteur de la photo. -->
+      <div class="presentation-accueil" style="align-items:start;">
+        <div>
+          <p class="sous-titre">Notre stand</p>
+          <h2 class="titre-section">Un stand à remplir grâce à vous</h2>
+          <p class="texte-large">
+            Pour remplir notre stand, nous faisons appel à votre générosité. Chaque objet donné
+            nous rapproche un peu plus de nos objectifs.
+          </p>
+          <p class="texte-large">
+            L'intégralité des bénéfices sera reversée à l'association afin de financer les projets
+            de nos jeunes et de continuer à leur faire vivre des expériences inoubliables.
+          </p>
+
+          <h2 class="titre-section titre-sous-section">Ce que nous recherchons</h2>
+          <p class="texte-large">Nous recherchons des objets en bon état :</p>
+          <ul class="points-forts">
+            <li>Vêtements</li>
+            <li>Articles de sport</li>
+            <li>Objets pour la maison</li>
+            <li>Ustensiles de cuisine</li>
+            <li>Jouets</li>
+            <li>Livres</li>
+            <li>Jeux</li>
+            <li>Décoration</li>
+          </ul>
+          <p class="texte-large">…et tout ce qui peut avoir une seconde vie !</p>
+        </div>
+        <img src="assets/img/actu-foire-a-tout.jpg"
+             alt="Affiche de la Foire à Tout de Génération R92 — samedi 12 septembre 2026, de 8h à 18h, Le Plessis-Robinson"
+             style="width:100%; border-radius:14px; box-shadow:var(--ombre);">
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PRATIQUE : DÉPÔT DES DONS + CONTACT (fond navy) ============ -->
+  <!-- padding-bottom augmenté pour bien aérer l'espace avant le pied de page. -->
+  <section class="section section-sombre" style="padding-bottom:160px;">
+    <div class="conteneur">
+      <p class="sous-titre">Pratique</p>
+      <h2 class="titre-section">Déposer vos dons</h2>
+
+      <ul class="points-forts">
+        <li><strong>Quand :</strong> le mercredi à partir de 18h, ou sur rendez-vous.</li>
+        <li><strong>Où :</strong> Centre d'entraînement du Racing 92 — Avenue Paul Langevin, 92350 Le Plessis-Robinson.</li>
+        <li><strong>Sur rendez-vous :</strong> écrivez-nous ou contactez-nous en message privé sur Instagram.</li>
+      </ul>
+
+      <p class="texte-large">Merci à tous pour votre soutien et pour vos partages !</p>
+
+      <!-- Boutons d'action : enregistrer l'événement dans son agenda + contact.
+           Le bouton « Ajouter à mon agenda » est généré automatiquement par
+           main.js à partir des données data-* ci-dessous : il télécharge un
+           fichier .ics (Apple Calendar / Google Agenda / Outlook) avec DEUX
+           rappels (la veille + 2 h avant). Voir GUIDE-EDITION.md § 3 bis. -->
+      <div class="hero-boutons" style="justify-content:flex-start; margin-top:28px;">
+        <a class="btn btn-primaire btn-grand" data-agenda
+           data-titre="Foire à Tout du Plessis-Robinson"
+           data-date="2026-09-12"
+           data-heure-debut="08:00"
+           data-heure-fin="18:00"
+           data-lieu="Centre d'entraînement du Racing 92, Avenue Paul Langevin, 92350 Le Plessis-Robinson"
+           data-description="Stand Génération R92 à la Foire à Tout. Vos dons financent les projets de nos jeunes ! Contact : generationr92@gmail.com"
+           data-rappel="les-deux">Ajouter à mon agenda</a>
+        <a class="btn btn-grand btn-contour" href="contact.html">Nous contacter</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PIED DE PAGE ============ -->
+  <footer class="pied">
+    <div class="conteneur">
+      <!-- Colonnes de liens (plan du site) -->
+      <div class="pied-colonnes">
+        <div class="pied-colonne">
+          <h4>L'association</h4>
+          <a href="index.html">Accueil</a>
+          <a href="qui-sommes-nous.html">Qui sommes-nous</a>
+          <a href="nos-projets.html">Nos projets</a>
+          <a href="actualites.html">Actualités</a>
+        </div>
+        <div class="pied-colonne">
+          <h4>Nous soutenir</h4>
+          <a href="adhesion.html">Adhérer</a>
+          <a href="boutique.html">Boutique</a>
+          <a href="faire-un-don.html">Faire un don</a>
+          <a href="sponsors.html">Ils nous soutiennent</a>
+          <a href="devenir-partenaire.html">Devenir partenaire</a>
+        </div>
+        <div class="pied-colonne">
+          <h4>Infos &amp; légal</h4>
+          <a href="contact.html">Contact</a>
+          <a href="faq.html">FAQ</a>
+          <a href="mentions-legales.html">Mentions légales</a>
+          <a href="cgv.html">CGV</a>
+          <a href="rgpd.html">RGPD</a>
+          <a href="statuts.html">Statuts</a>
+        </div>
+      </div>
+
+      <!-- Barre du bas : logo + contact + copyright -->
+      <div class="pied-bas">
+        <img class="pied-logo" src="assets/img/logo-r92.png" alt="Génération R92">
+        <p class="pied-contact">
+          <a href="mailto:generationr92@gmail.com">generationr92@gmail.com</a>
+          <span class="pied-sep">·</span>
+          <a href="https://instagram.com/generationr92" target="_blank" rel="noopener">Instagram @generationr92</a>
+        </p>
+        <p>© 2026 Génération R92 — Association de rugby, Hauts-de-Seine. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

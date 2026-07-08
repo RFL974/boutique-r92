@@ -1,0 +1,47 @@
+# ─────────────────────────────────────────────
+# Génération R92 — fichiers non versionnés
+# ─────────────────────────────────────────────
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.AppleDouble
+.LSOverride
+Icon?
+
+# Windows / Linux (au cas où le projet change de machine)
+Thumbs.db
+Desktop.ini
+*~
+
+# Réglages locaux Claude Code (permissions propres à cette machine)
+.claude/settings.local.json
+
+# Éditeurs
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+
+# Logs & temporaires
+*.log
+npm-debug.log*
+.cache/
+tmp/
+temp/
+
+# Sorties de build locales (le site est statique, mais Netlify/Vercel
+# créent ces dossiers si on utilise leur CLI)
+.netlify/
+.vercel/
+dist/
+node_modules/
+
+# Fichiers d'environnement — ne JAMAIS versionner de clé ou de token
+.env
+.env.*
+!.env.example

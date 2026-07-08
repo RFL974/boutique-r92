@@ -1,0 +1,26 @@
+[
+  {
+    "nom": "Débardeur R92",
+    "image": "debardeur-r92.jpg",
+    "description": "Contenu provisoire — Débardeur officiel Génération R92, tissu respirant, coupe sport. Idéal entraînement et supporters. À compléter.",
+    "prix": "25 € adhérent / 30 € non-adhérent",
+    "page": "debardeur-r92.html",
+    "lien": "#"
+  },
+  {
+    "nom": "T-shirt Génération R92",
+    "image": "",
+    "description": "Contenu provisoire — T-shirt coton aux couleurs de l'association, logo brodé sur la poitrine. Disponible en plusieurs tailles. À compléter.",
+    "prix": "20 €",
+    "page": "",
+    "lien": "#"
+  },
+  {
+    "nom": "Écharpe supporter R92",
+    "image": "",
+    "description": "Contenu provisoire — Écharpe tricotée navy et ciel pour encourager l'équipe dans les tribunes. Édition Génération R92. À compléter.",
+    "prix": "15 €",
+    "page": "",
+    "lien": "#"
+  }
+]

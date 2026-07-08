@@ -1,0 +1,584 @@
+/* =========================================================
+   GÉNÉRATION R92 — Le peu de JavaScript du site
+   -----------------------------------------------------
+   Rôle : lire les fichiers JSON (actus + produits) et
+   fabriquer les cartes automatiquement dans les pages.
+   Comme ça, pour ajouter une actu ou un produit, tu
+   n'édites QUE le fichier JSON, pas le HTML.
+   ========================================================= */
+
+/* Petite fonction pour transformer une date "2026-08-25"
+   en date lisible en français : "25 août 2026". */
+function formaterDate(dateISO) {
+  // Si la date est vide ou invalide, on renvoie tel quel.
+  const d = new Date(dateISO);
+  if (isNaN(d)) return dateISO;
+  return d.toLocaleDateString('fr-FR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+}
+
+/* Applique la disposition d'une grille selon le nombre de cartes :
+   - nombre impair -> "grille-ligne"  (toutes sur une même ligne)
+   - nombre pair   -> "grille-paires" (deux par ligne) */
+function appliquerDispositionGrille(conteneur, nombre) {
+  conteneur.classList.remove('grille-ligne', 'grille-paires');
+  if (nombre <= 0) return;
+  conteneur.classList.add(nombre % 2 === 0 ? 'grille-paires' : 'grille-ligne');
+}
+
+/* Rend cliquables les cartes qui ont une fiche détaillée (attribut data-page).
+   Un clic sur la carte ouvre la fiche — SAUF si on a cliqué sur un lien/bouton
+   (ex : "Commander"), qui garde son propre comportement. */
+function initCartesCliquables(conteneur) {
+  const cartes = conteneur.querySelectorAll('.carte-cliquable');
+  cartes.forEach(function (carte) {
+    carte.addEventListener('click', function (evenement) {
+      if (evenement.target.closest('a')) return; // clic sur un lien : on le laisse agir
+      const page = carte.getAttribute('data-page');
+      if (page) window.location.href = page;
+    });
+  });
+}
+
+/* Sécurité (anti-injection HTML / XSS) : échappe les caractères spéciaux d'une
+   valeur venant d'un fichier JSON avant de l'insérer dans la page.
+   On échappe AUSSI les guillemets " et ' : ces valeurs sont parfois placées
+   dans des attributs (par ex. href="…", src="…", alt="…"). Sans cet échappement,
+   un guillemet présent dans le JSON permettrait de « sortir » de l'attribut et
+   d'injecter du code. */
+function echapper(texte) {
+  return (texte == null ? '' : String(texte))
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/* Sécurité : n'autorise dans un lien (href) que des adresses sûres.
+   Bloque les schémas dangereux (javascript:, data:, vbscript:) qui pourraient
+   exécuter du code au clic, et renvoie "#" à la place. Les liens http(s),
+   mailto:, les ancres (#) et les chemins internes (ex. debardeur-r92.html)
+   restent autorisés. */
+function urlSure(url) {
+  const u = (url == null ? '' : String(url)).trim();
+  if (u === '') return '#';
+  // On teste le schéma sur une version débarrassée des caractères de contrôle
+  // (tabulations, retours à la ligne, etc.). Certains navigateurs les ignorent
+  // à l'intérieur d'un schéma d'URL : sans ce nettoyage, un « java\tscript: »
+  // passerait à travers le filtre ci-dessous.
+  const nettoye = u.replace(/[\u0000-\u001F\u007F]/g, '');
+  if (/^(javascript|data|vbscript):/i.test(nettoye)) return '#';
+  return u;
+}
+
+/* =========================================================
+   ÉVÉNEMENTS — bouton « Ajouter à mon agenda » (.ics) + rappel
+   ---------------------------------------------------------
+   Dès qu'un contenu fournit une DATE, un HORAIRE et un LIEU,
+   on génère automatiquement un bouton qui télécharge un fichier
+   .ics standard (compatible Apple Calendar, Google Agenda,
+   Outlook…) contenant l'événement ET un ou deux rappels
+   (la veille et/ou 2 h avant).
+
+   Deux façons de décrire un événement :
+   1) Dans un JSON (actus / projets / produits) : ajouter un objet
+      "evenement" à l'entrée concernée. Exemple :
+        "evenement": {
+          "date": "2026-09-12",       (obligatoire, AAAA-MM-JJ)
+          "heureDebut": "14:00",      (obligatoire, HH:MM)
+          "heureFin": "18:00",        (facultatif — défaut : +2 h)
+          "lieu": "Gymnase …, 92350 …", (obligatoire)
+          "titre": "…",               (facultatif — défaut : titre du contenu)
+          "description": "…",         (facultatif — défaut : extrait du contenu)
+          "rappel": "les-deux"        (facultatif : "veille" | "2h" | "les-deux")
+        }
+   2) Dans une page HTML : placer un bloc
+        <div data-agenda data-date="…" data-heure-debut="…"
+             data-heure-fin="…" data-lieu="…" data-titre="…"
+             data-description="…" data-rappel="…"></div>
+   Sans les trois champs obligatoires (date, horaire, lieu),
+   AUCUN bouton n'apparaît.
+   ========================================================= */
+
+/* Échappe les caractères spéciaux d'un texte pour le format iCalendar
+   (RFC 5545) : antislash, point-virgule, virgule et retours à la ligne. */
+function echapperICS(texte) {
+  return (texte == null ? '' : String(texte))
+    .replace(/\\/g, '\\\\')
+    .replace(/;/g, '\\;')
+    .replace(/,/g, '\\,')
+    .replace(/\r?\n/g, '\\n');
+}
+
+/* Fabrique un « slug » sans accents ni caractères spéciaux (pour l'UID et
+   le nom de fichier). Ex. : "Foire à Tout" -> "foire-a-tout". */
+function slugEvenement(texte) {
+  return (texte || 'evenement')
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // retire les accents
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'evenement';
+}
+
+/* "2026-09-12" + "14:00" -> "20260912T140000" (heure locale « flottante »,
+   interprétée dans le fuseau de la personne — adapté à un public en France). */
+function horodatageICS(date, heure) {
+  const d = String(date).replace(/-/g, '');
+  const h = (String(heure || '00:00').replace(/:/g, '') + '0000').slice(0, 6);
+  return d + 'T' + h;
+}
+
+/* Vrai seulement si l'événement a le minimum requis : date + horaire + lieu. */
+function evenementComplet(ev) {
+  return !!(ev && ev.date && ev.heureDebut && ev.lieu);
+}
+
+/* Construit le texte complet d'un fichier .ics pour un événement. */
+function construireICS(ev) {
+  const pad = (n) => String(n).padStart(2, '0');
+
+  // Heure de fin : celle fournie, sinon 2 h après le début (calcul en local,
+  // ce qui gère proprement un éventuel passage à minuit).
+  let finDate = ev.date, finHeure = ev.heureFin;
+  if (!finHeure) {
+    const [a, m, j] = ev.date.split('-').map(Number);
+    const [hh, mm] = ev.heureDebut.split(':').map(Number);
+    const fin = new Date(a, m - 1, j, hh + 2, mm);
+    finDate = fin.getFullYear() + '-' + pad(fin.getMonth() + 1) + '-' + pad(fin.getDate());
+    finHeure = pad(fin.getHours()) + ':' + pad(fin.getMinutes());
+  }
+
+  const uid = slugEvenement(ev.titre) + '-' + String(ev.date).replace(/-/g, '') + '@generationr92';
+
+  // Horodatage de création (maintenant, en UTC).
+  const now = new Date();
+  const dtstamp = now.getUTCFullYear() + pad(now.getUTCMonth() + 1) + pad(now.getUTCDate())
+    + 'T' + pad(now.getUTCHours()) + pad(now.getUTCMinutes()) + pad(now.getUTCSeconds()) + 'Z';
+
+  // Rappels : "veille" (-P1D), "2h" (-PT2H) ou "les-deux" (défaut).
+  const rappel = (ev.rappel || 'les-deux').toLowerCase();
+  const declencheurs = [];
+  if (rappel === 'veille' || rappel === 'les-deux') declencheurs.push('-P1D');
+  if (rappel === '2h' || rappel === 'les-deux') declencheurs.push('-PT2H');
+
+  const lignes = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Generation R92//Site vitrine//FR',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'BEGIN:VEVENT',
+    'UID:' + uid,
+    'DTSTAMP:' + dtstamp,
+    'DTSTART:' + horodatageICS(ev.date, ev.heureDebut),
+    'DTEND:' + horodatageICS(finDate, finHeure),
+    'SUMMARY:' + echapperICS(ev.titre),
+    'DESCRIPTION:' + echapperICS(ev.description || ''),
+    'LOCATION:' + echapperICS(ev.lieu)
+  ];
+  declencheurs.forEach(function (trigger) {
+    lignes.push(
+      'BEGIN:VALARM',
+      'ACTION:DISPLAY',
+      'DESCRIPTION:' + echapperICS('Rappel : ' + ev.titre),
+      'TRIGGER:' + trigger,
+      'END:VALARM'
+    );
+  });
+  lignes.push('END:VEVENT', 'END:VCALENDAR');
+  return lignes.join('\r\n');
+}
+
+/* Crée le bouton <a> « Ajouter à mon agenda » (télécharge le .ics).
+   Renvoie null si l'événement est incomplet (aucun bouton affiché).
+   titreDefaut / descriptionDefaut : repris du contenu si non précisés.
+   options.classes / options.label : personnalisent l'apparence et le texte
+   (utilisé pour reprendre le style d'un bouton déjà présent dans une page). */
+function creerBoutonAgenda(ev, titreDefaut, descriptionDefaut, options) {
+  if (!evenementComplet(ev)) return null;
+  options = options || {};
+  const evComplet = {
+    date: ev.date,
+    heureDebut: ev.heureDebut,
+    heureFin: ev.heureFin || '',
+    lieu: ev.lieu,
+    titre: ev.titre || titreDefaut || 'Événement Génération R92',
+    description: ev.description || descriptionDefaut || '',
+    rappel: ev.rappel || 'les-deux'
+  };
+  const ics = construireICS(evComplet);
+  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+
+  const a = document.createElement('a');
+  a.className = options.classes || 'btn btn-primaire bouton-agenda';
+  a.href = URL.createObjectURL(blob);
+  a.download = slugEvenement(evComplet.titre) + '-r92.ics';
+  a.textContent = options.label || 'Ajouter à mon agenda';
+  a.setAttribute('aria-label', 'Ajouter « ' + evComplet.titre + ' » à mon agenda');
+  return a;
+}
+
+/* Ajoute le bouton agenda dans chaque carte dont l'entrée JSON porte un
+   objet "evenement" complet (date + horaire + lieu). Appelée après le rendu. */
+function ajouterAgendaCartes(conteneur, items) {
+  const cartes = conteneur.querySelectorAll('.carte');
+  items.forEach(function (item, i) {
+    const bouton = creerBoutonAgenda(
+      item.evenement,
+      item.titre || item.nom,
+      item.extrait || item.description
+    );
+    if (!bouton || !cartes[i]) return;
+    const corps = cartes[i].querySelector('.carte-corps') || cartes[i];
+    corps.appendChild(bouton);
+  });
+}
+
+/* Remplace les éléments [data-agenda] présents dans les pages par le bouton
+   « Ajouter à mon agenda ». L'élément d'origine sert de gabarit : ses classes
+   CSS et son texte sont repris (on garantit au moins la classe .btn). S'il
+   manque une info obligatoire, l'élément est simplement retiré (rien affiché). */
+function initBlocsAgenda() {
+  document.querySelectorAll('[data-agenda]').forEach(function (bloc) {
+    let classes = (bloc.getAttribute('class') || '').trim();
+    if (!/(^|\s)btn(\s|$)/.test(classes)) {
+      classes = ('btn btn-primaire ' + classes).trim();
+    }
+    const label = (bloc.textContent || '').trim();
+    const bouton = creerBoutonAgenda({
+      date: bloc.getAttribute('data-date'),
+      heureDebut: bloc.getAttribute('data-heure-debut'),
+      heureFin: bloc.getAttribute('data-heure-fin') || '',
+      lieu: bloc.getAttribute('data-lieu'),
+      titre: bloc.getAttribute('data-titre') || '',
+      description: bloc.getAttribute('data-description') || '',
+      rappel: bloc.getAttribute('data-rappel') || 'les-deux'
+    }, '', '', { classes: classes, label: label });
+    if (bouton) bloc.replaceWith(bouton);
+    else bloc.remove();
+  });
+}
+
+/* ---------------------------------------------------------
+   CHARGEMENT DES ACTUALITÉS
+   Cherche un conteneur avec l'id "liste-actus" ; s'il
+   existe (page Actualités), on remplit les cartes.
+   --------------------------------------------------------- */
+async function chargerActus() {
+  const conteneur = document.getElementById('liste-actus');
+  if (!conteneur) return; // Pas sur la page actus : on ne fait rien.
+
+  try {
+    const reponse = await fetch('assets/data/actus.json');
+    // Si le fichier ne se charge pas (404, ouverture sans serveur…), on bascule
+    // dans le catch pour afficher un message clair au lieu de rester figé.
+    if (!reponse.ok) throw new Error('Réponse HTTP ' + reponse.status);
+    const actus = await reponse.json();
+
+    // On construit le HTML de toutes les cartes.
+    conteneur.innerHTML = actus.map(function (actu) {
+      // "page" = article détaillé (facultatif). S'il est renseigné, la carte
+      // devient cliquable, le titre devient un lien et un bouton "Lire l'article"
+      // apparaît. Sinon, la carte reste une simple brève non cliquable.
+      const page = actu.page && actu.page !== '' ? urlSure(actu.page) : '';
+      const classeCarte = page ? 'carte carte-cliquable' : 'carte';
+      const dataPage = page ? ` data-page="${echapper(page)}"` : '';
+      const titre = page
+        ? `<h3><a href="${echapper(page)}">${echapper(actu.titre)}</a></h3>`
+        : `<h3>${echapper(actu.titre)}</h3>`;
+      const bouton = page
+        ? `<a class="btn btn-primaire" href="${echapper(page)}">Lire l'article</a>`
+        : '';
+      return `
+        <article class="${classeCarte}"${dataPage}>
+          <img src="assets/img/${echapper(actu.image)}" alt="${echapper(actu.titre)}">
+          <div class="carte-corps">
+            <span class="carte-date">${echapper(formaterDate(actu.date))}</span>
+            ${titre}
+            <p>${echapper(actu.extrait)}</p>
+            ${bouton}
+          </div>
+        </article>
+      `;
+    }).join('');
+    appliquerDispositionGrille(conteneur, actus.length);
+    initCartesCliquables(conteneur);
+    ajouterAgendaCartes(conteneur, actus);
+  } catch (erreur) {
+    // Message affiché si le fichier ne se charge pas (ex : ouvert sans serveur local).
+    conteneur.innerHTML =
+      '<p class="message-info">Impossible de charger les actualités. ' +
+      'Lance le site avec un petit serveur local (voir instructions).</p>';
+    console.error(erreur);
+  }
+}
+
+/* ---------------------------------------------------------
+   CHARGEMENT DES PRODUITS (BOUTIQUE)
+   --------------------------------------------------------- */
+async function chargerProduits() {
+  const conteneur = document.getElementById('liste-produits');
+  if (!conteneur) return; // Pas sur la page boutique : on ne fait rien.
+
+  try {
+    const reponse = await fetch('assets/data/produits.json');
+    if (!reponse.ok) throw new Error('Réponse HTTP ' + reponse.status);
+    const produits = await reponse.json();
+
+    conteneur.innerHTML = produits.map(function (produit) {
+      // Le bouton "Commander" pointe vers "#" pour l'instant (il recevra plus tard
+      // l'adresse HelloAsso, dans le JSON). urlSure() bloque au passage tout lien
+      // dangereux (javascript:, data:…) qui aurait été mis dans le JSON.
+      const lien = urlSure(produit.lien);
+      // "page" = fiche produit détaillée (facultatif). Si elle existe, la carte
+      // devient cliquable et le titre devient un lien vers cette fiche.
+      const page = produit.page && produit.page !== '' ? urlSure(produit.page) : '';
+      const classeCarte = page ? 'carte carte-cliquable' : 'carte';
+      const dataPage = page ? ` data-page="${echapper(page)}"` : '';
+      const titre = page
+        ? `<h3><a href="${echapper(page)}">${echapper(produit.nom)}</a></h3>`
+        : `<h3>${echapper(produit.nom)}</h3>`;
+      // Visuel : une vraie image si "image" est renseigné, sinon une vignette
+      // placeholder à la marque (monogramme R92 sur fond navy).
+      const visuel = produit.image && produit.image !== ''
+        ? `<img src="assets/img/${echapper(produit.image)}" alt="${echapper(produit.nom)}">`
+        : `<div class="produit-vignette" aria-hidden="true"><b>R92</b><span>Photo à venir</span></div>`;
+      return `
+        <article class="${classeCarte}"${dataPage}>
+          ${visuel}
+          <div class="carte-corps">
+            ${titre}
+            <p>${echapper(produit.description)}</p>
+            <div class="prix">${echapper(produit.prix)}</div>
+            <a class="btn btn-primaire" href="${echapper(lien)}">Commander</a>
+          </div>
+        </article>
+      `;
+    }).join('');
+    appliquerDispositionGrille(conteneur, produits.length);
+    initCartesCliquables(conteneur);
+    ajouterAgendaCartes(conteneur, produits);
+  } catch (erreur) {
+    conteneur.innerHTML =
+      '<p class="message-info">Impossible de charger les produits. ' +
+      'Lance le site avec un petit serveur local (voir instructions).</p>';
+    console.error(erreur);
+  }
+}
+
+/* ---------------------------------------------------------
+   CHARGEMENT DES SPONSORS
+   --------------------------------------------------------- */
+async function chargerSponsors() {
+  const conteneur = document.getElementById('liste-sponsors');
+  if (!conteneur) return; // Pas sur la page sponsors : on ne fait rien.
+
+  try {
+    const reponse = await fetch('assets/data/sponsors.json');
+    if (!reponse.ok) throw new Error('Réponse HTTP ' + reponse.status);
+    const sponsors = await reponse.json();
+
+    conteneur.innerHTML = sponsors.map(function (s) {
+      // Logo : une image si "logo" est renseigné, sinon une tuile navy provisoire
+      // affichant le monogramme « R92 » (rendu par la classe .sponsor-logo-vide).
+      const logo = s.logo && s.logo !== ''
+        ? `<img class="sponsor-logo" src="assets/img/${echapper(s.logo)}" alt="${echapper(s.nom)}">`
+        : `<div class="sponsor-logo sponsor-logo-vide" aria-hidden="true"></div>`;
+      // Ville : affichée seulement si renseignée.
+      const ville = s.ville && s.ville !== ''
+        ? `<p class="sponsor-ville">${echapper(s.ville)}</p>`
+        : '';
+      // Le bouton "Visiter le site" n'apparaît que si un vrai lien est fourni.
+      const lien = s.lien && s.lien !== '' && s.lien !== '#'
+        ? `<a class="btn btn-primaire" href="${echapper(urlSure(s.lien))}" target="_blank" rel="noopener">Visiter le site</a>`
+        : '';
+      return `
+        <article class="carte carte-sponsor">
+          ${logo}
+          <div class="carte-corps">
+            <h3>${echapper(s.nom)}</h3>
+            ${ville}
+            <p>${echapper(s.description)}</p>
+            ${lien}
+          </div>
+        </article>
+      `;
+    }).join('');
+    appliquerDispositionGrille(conteneur, sponsors.length);
+  } catch (erreur) {
+    conteneur.innerHTML =
+      '<p class="message-info">Impossible de charger les sponsors. ' +
+      'Lance le site avec un petit serveur local (voir README).</p>';
+    console.error(erreur);
+  }
+}
+
+/* ---------------------------------------------------------
+   CHARGEMENT DES PROJETS (page "Nos projets")
+   Même principe que la boutique : chaque projet devient une
+   carte. Si le projet a une "page" (article détaillé), sa carte
+   devient cliquable et un bouton "Lire l'article" apparaît.
+   --------------------------------------------------------- */
+async function chargerProjets() {
+  const conteneur = document.getElementById('liste-projets');
+  if (!conteneur) return; // Pas sur la page projets : on ne fait rien.
+
+  try {
+    const reponse = await fetch('assets/data/projets.json');
+    if (!reponse.ok) throw new Error('Réponse HTTP ' + reponse.status);
+    const projets = await reponse.json();
+
+    conteneur.innerHTML = projets.map(function (projet) {
+      // "page" = article détaillé (facultatif). S'il existe, la carte devient
+      // cliquable, le titre devient un lien et un bouton "Lire l'article" s'affiche.
+      const page = projet.page && projet.page !== '' ? urlSure(projet.page) : '';
+      const classeCarte = page ? 'carte carte-cliquable' : 'carte';
+      const dataPage = page ? ` data-page="${echapper(page)}"` : '';
+      const titre = page
+        ? `<h3><a href="${echapper(page)}">${echapper(projet.nom)}</a></h3>`
+        : `<h3>${echapper(projet.nom)}</h3>`;
+      // Visuel : vraie image si "image" est renseigné, sinon vignette à la marque.
+      const visuel = projet.image && projet.image !== ''
+        ? `<img src="assets/img/${echapper(projet.image)}" alt="${echapper(projet.nom)}">`
+        : `<div class="produit-vignette" aria-hidden="true"><b>R92</b><span>Photo à venir</span></div>`;
+      // Bouton "Lire l'article" uniquement si un article est lié.
+      const bouton = page
+        ? `<a class="btn btn-primaire" href="${echapper(page)}">Lire l'article</a>`
+        : '';
+      return `
+        <article class="${classeCarte}"${dataPage}>
+          ${visuel}
+          <div class="carte-corps">
+            ${titre}
+            <p>${echapper(projet.description)}</p>
+            ${bouton}
+          </div>
+        </article>
+      `;
+    }).join('');
+    appliquerDispositionGrille(conteneur, projets.length);
+    initCartesCliquables(conteneur);
+    ajouterAgendaCartes(conteneur, projets);
+  } catch (erreur) {
+    conteneur.innerHTML =
+      '<p class="message-info">Impossible de charger les projets. ' +
+      'Lance le site avec un petit serveur local (voir README).</p>';
+    console.error(erreur);
+  }
+}
+
+/* ---------------------------------------------------------
+   MENU DÉROULANT "Nous soutenir"
+   Sur ordinateur il s'ouvre au survol (géré en CSS).
+   Sur mobile/tactile, on l'ouvre/ferme au clic sur le bouton.
+   --------------------------------------------------------- */
+function initMenuDeroulant() {
+  const menus = document.querySelectorAll('.menu-deroulant');
+
+  menus.forEach(function (menu) {
+    const bouton = menu.querySelector('.menu-deroulant-btn');
+    if (!bouton) return;
+
+    bouton.addEventListener('click', function (evenement) {
+      evenement.stopPropagation(); // évite de refermer aussitôt
+      const ouvert = menu.classList.toggle('ouvert');
+      bouton.setAttribute('aria-expanded', ouvert ? 'true' : 'false');
+    });
+  });
+
+  // Un clic ailleurs sur la page referme le menu.
+  document.addEventListener('click', function () {
+    menus.forEach(function (menu) {
+      menu.classList.remove('ouvert');
+      const bouton = menu.querySelector('.menu-deroulant-btn');
+      if (bouton) bouton.setAttribute('aria-expanded', 'false');
+    });
+  });
+}
+
+/* ---------------------------------------------------------
+   CARROUSEL D'IMAGES (fiche produit)
+   Défilement des photos avec flèches, puces et clavier.
+   Ne s'active que si un élément [data-carrousel] existe.
+   --------------------------------------------------------- */
+function initCarrousel() {
+  const carrousels = document.querySelectorAll('[data-carrousel]');
+
+  carrousels.forEach(function (carrousel) {
+    const piste = carrousel.querySelector('.carrousel-piste');
+    const slides = Array.from(carrousel.querySelectorAll('.carrousel-slide'));
+    const conteneurPoints = carrousel.querySelector('.carrousel-points');
+    if (!piste || slides.length === 0) return;
+
+    let index = 0;
+
+    // Construit une puce par diapositive.
+    const points = slides.map(function (slide, i) {
+      const point = document.createElement('button');
+      point.type = 'button';
+      point.className = 'carrousel-point';
+      point.setAttribute('aria-label', 'Aller à la photo ' + (i + 1));
+      point.addEventListener('click', function () { aller(i); });
+      if (conteneurPoints) conteneurPoints.appendChild(point);
+      return point;
+    });
+
+    function afficher() {
+      piste.style.transform = 'translateX(-' + (index * 100) + '%)';
+      points.forEach(function (p, i) {
+        p.classList.toggle('actif', i === index);
+      });
+    }
+    function aller(i) {
+      index = (i + slides.length) % slides.length;
+      afficher();
+    }
+
+    const prec = carrousel.querySelector('.carrousel-prec');
+    const suiv = carrousel.querySelector('.carrousel-suiv');
+    if (prec) prec.addEventListener('click', function () { aller(index - 1); });
+    if (suiv) suiv.addEventListener('click', function () { aller(index + 1); });
+
+    // Navigation au clavier (flèches gauche/droite quand le carrousel a le focus).
+    carrousel.setAttribute('tabindex', '0');
+    carrousel.addEventListener('keydown', function (evenement) {
+      if (evenement.key === 'ArrowLeft') { aller(index - 1); }
+      else if (evenement.key === 'ArrowRight') { aller(index + 1); }
+    });
+
+    afficher();
+  });
+}
+
+/* ---------------------------------------------------------
+   MENU MOBILE (bouton hamburger)
+   Ouvre/ferme la navigation sur petit écran.
+   --------------------------------------------------------- */
+function initMenuMobile() {
+  const bouton = document.querySelector('.nav-toggle');
+  const nav = document.querySelector('.nav');
+  if (!bouton || !nav) return;
+
+  bouton.addEventListener('click', function (evenement) {
+    evenement.stopPropagation();
+    const ouvert = nav.classList.toggle('ouvert');
+    bouton.setAttribute('aria-expanded', ouvert ? 'true' : 'false');
+  });
+}
+
+/* On lance tout quand la page est prête.
+   Chaque fonction ne s'active que si les éléments concernés existent. */
+document.addEventListener('DOMContentLoaded', function () {
+  chargerActus();
+  chargerProduits();
+  chargerSponsors();
+  chargerProjets();
+  initMenuDeroulant();
+  initMenuMobile();
+  initCarrousel();
+  initBlocsAgenda();
+});

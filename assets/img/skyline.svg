@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" preserveAspectRatio="xMidYMax meet">
+  
+  <g fill="#B8D8F8">
+    
+    <rect x="30" y="150" width="64" height="170"></rect>
+    <rect x="104" y="100" width="44" height="220"></rect>
+    <rect x="158" y="180" width="58" height="140"></rect>
+    <rect x="226" y="120" width="40" height="200"></rect>
+    <rect x="276" y="60" width="70" height="260"></rect>
+    <rect x="305" y="34" width="6" height="26"></rect>
+    <rect x="356" y="170" width="54" height="150"></rect>
+
+    
+    <rect x="470" y="80" width="240" height="56"></rect>
+    <rect x="470" y="136" width="64" height="184"></rect>
+    <rect x="646" y="136" width="64" height="184"></rect>
+
+    
+    <rect x="740" y="110" width="58" height="210"></rect>
+    <rect x="808" y="150" width="48" height="170"></rect>
+    <rect x="866" y="90" width="66" height="230"></rect>
+    <rect x="895" y="62" width="5" height="28"></rect>
+    <rect x="942" y="170" width="52" height="150"></rect>
+    <rect x="1004" y="120" width="80" height="200"></rect>
+    <rect x="1094" y="150" width="46" height="170"></rect>
+    <rect x="1150" y="110" width="40" height="210"></rect>
+  </g>
+</svg>

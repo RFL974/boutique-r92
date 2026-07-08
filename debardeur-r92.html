@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Génération R92 — Débardeur Génération R92</title>
+  <!-- Favicon de l'association (icône dans l'onglet du navigateur) -->
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/img/logo-r92.png">
+  <meta name="description" content="Débardeur Génération R92 — ton club, ton style, ton débardeur R92. Tarif famille 25 €, grand public 30 €.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- ============ EN-TÊTE ============ -->
+  <header class="entete">
+    <div class="conteneur">
+      <a class="logo" href="index.html">
+        <img src="assets/img/logo-r92.png" alt="Génération R92">
+      </a>
+      <!-- Bouton hamburger (visible seulement sur mobile) -->
+      <button class="nav-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false">&#9776;</button>
+      <nav class="nav">
+        <a href="index.html">Accueil</a>
+        <!-- Menu déroulant "L'association" -->
+        <div class="menu-deroulant">
+          <button class="menu-deroulant-btn" type="button" aria-haspopup="true" aria-expanded="false">L'association</button>
+          <div class="menu-deroulant-contenu">
+            <a href="qui-sommes-nous.html">Qui sommes-nous</a>
+            <a href="nos-projets.html">Nos projets</a>
+            <a href="actualites.html">Actualités</a>
+          </div>
+        </div>
+        <!-- Menu déroulant "Nous soutenir" -->
+        <div class="menu-deroulant">
+          <button class="menu-deroulant-btn actif" type="button" aria-haspopup="true" aria-expanded="false">Nous soutenir</button>
+          <div class="menu-deroulant-contenu">
+            <a href="adhesion.html">Adhérer</a>
+            <a href="boutique.html" class="actif">Boutique</a>
+            <a href="faire-un-don.html">Faire un don</a>
+            <a href="sponsors.html">Ils nous soutiennent</a>
+            <a href="devenir-partenaire.html">Devenir partenaire</a>
+          </div>
+        </div>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Couche filigrane skyline continue (transparaît sur les sections blanches) -->
+  <div class="filigrane-page">
+    <img src="assets/img/hero-defense-watermark.png" alt="" aria-hidden="true">
+  </div>
+
+  <!-- Fil d'Ariane -->
+  <nav class="fil-ariane" aria-label="Fil d'Ariane">
+    <div class="conteneur">
+      <a href="index.html">Accueil</a><span class="sep">›</span><a href="boutique.html">Boutique</a><span class="sep">›</span><span class="actuel">Débardeur Génération R92</span>
+    </div>
+  </nav>
+
+  <!-- ============ FICHE PRODUIT ============ -->
+  <section class="section">
+    <div class="conteneur">
+      <p class="sous-titre">Boutique</p>
+      <h2 class="titre-section">Débardeur Génération R92</h2>
+      <p class="fiche-accroche">Ton club, ton style, ton débardeur R92.</p>
+
+      <div class="fiche-produit">
+        <!-- Colonne visuel : carrousel des photos du débardeur -->
+        <div class="fiche-visuel">
+          <div class="carrousel" data-carrousel aria-roledescription="carrousel" aria-label="Photos du débardeur R92">
+            <div class="carrousel-piste">
+              <div class="carrousel-slide" role="group" aria-roledescription="diapositive" aria-label="1 sur 5">
+                <img src="assets/img/debardeur-1.jpg" alt="Débardeur R92 porté par un enfant, vues de dos et de face" loading="lazy">
+              </div>
+              <div class="carrousel-slide" role="group" aria-roledescription="diapositive" aria-label="2 sur 5">
+                <img src="assets/img/debardeur-2.jpg" alt="Débardeur R92 porté par une femme, vues de dos et de face" loading="lazy">
+              </div>
+              <div class="carrousel-slide" role="group" aria-roledescription="diapositive" aria-label="3 sur 5">
+                <img src="assets/img/debardeur-3.jpg" alt="Débardeur R92 porté par un homme, vues de dos et de face" loading="lazy">
+              </div>
+              <div class="carrousel-slide" role="group" aria-roledescription="diapositive" aria-label="4 sur 5">
+                <img src="assets/img/debardeur-4.jpg" alt="Débardeur R92 porté par une enfant, vues de dos et de face" loading="lazy">
+              </div>
+              <div class="carrousel-slide" role="group" aria-roledescription="diapositive" aria-label="5 sur 5">
+                <img src="assets/img/debardeur-5.jpg" alt="Débardeur R92 porté, vues de dos et de face" loading="lazy">
+              </div>
+            </div>
+            <button class="carrousel-fleche carrousel-prec" type="button" aria-label="Photo précédente">&#8249;</button>
+            <button class="carrousel-fleche carrousel-suiv" type="button" aria-label="Photo suivante">&#8250;</button>
+            <div class="carrousel-points" role="tablist" aria-label="Choisir une photo"></div>
+          </div>
+        </div>
+
+        <!-- Colonne informations : tarifs, note famille, commande -->
+        <div class="fiche-infos">
+          <div class="tarifs">
+            <div class="tarif-carte tarif-famille">
+              <span class="tarif-label">Tarif membre de la famille Génération R92</span>
+              <span class="tarif-prix">25 €</span>
+            </div>
+            <div class="tarif-carte">
+              <span class="tarif-label">Tarif grand public</span>
+              <span class="tarif-prix">30 €</span>
+            </div>
+          </div>
+
+          <p class="note-famille">
+            Vous faites partie de la famille Génération R92 en adhérant à l'association.
+            Pas encore membre ? <a href="adhesion.html">Rejoignez-nous</a> et bénéficiez du
+            tarif préférentiel.
+          </p>
+
+          <p style="margin-top:24px;">
+            <a class="btn btn-primaire btn-grand" href="#">Je porte nos couleurs</a>
+          </p>
+
+          <p class="livraison">
+            Livraison à domicile ou retrait sur place, au choix lors de la commande.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DESCRIPTION ============ -->
+  <section class="section section-sombre">
+    <div class="conteneur">
+      <p class="sous-titre">Le produit</p>
+      <h2 class="titre-section">Description</h2>
+      <p class="texte-large">
+        Porter le débardeur Génération R92, c'est afficher fièrement son appartenance à une
+        famille : celle des parents, des joueurs et des bénévoles qui font vivre l'esprit
+        Ciel &amp; Blanc au quotidien. Plus qu'un club, une passion partagée.
+      </p>
+      <p class="texte-large">
+        Débardeur bleu ciel floqué « R92 Ciel &amp; Blanc » à l'avant, « R92 92 Hauts-de-Seine »
+        au dos, avec la skyline de La Défense imprimée en bas du maillot — un clin d'œil à notre
+        ancrage dans les Hauts-de-Seine. Matière légère et respirante, pensée pour l'effort
+        comme pour la vie de tous les jours.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ POINTS FORTS ============ -->
+  <section class="section">
+    <div class="conteneur">
+      <p class="sous-titre">Pourquoi on l'aime</p>
+      <h2 class="titre-section">Points forts</h2>
+      <ul class="points-forts">
+        <li>Léger et confortable</li>
+        <li>Respirant, idéal pour l'effort</li>
+        <li>Design 100 % R92</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ GUIDE DES TAILLES ============ -->
+  <section class="section">
+    <div class="conteneur">
+      <p class="sous-titre">Bien choisir</p>
+      <h2 class="titre-section">Guide des tailles</h2>
+
+      <div class="avertissement">
+        <strong>Tailles asiatiques</strong> — nous recommandons de bien vérifier vos mesures
+        avant de commander (mesure manuelle, 1 à 3 cm de marge d'erreur).
+      </div>
+
+      <!-- Le tableau défile horizontalement sur les petits écrans -->
+      <div class="tableau-scroll" style="max-width:100%;">
+        <table class="tableau-don">
+          <thead>
+            <tr>
+              <th>Taille</th>
+              <th>Tour de poitrine (½)</th>
+              <th>Longueur</th>
+              <th>Poids</th>
+              <th>Taille (cm)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>4XS</td><td>39 cm</td><td>52 cm</td><td>20–27,5 kg</td><td>110–120 cm</td></tr>
+            <tr><td>3XS</td><td>41,5 cm</td><td>55 cm</td><td>27,5–32,5 kg</td><td>120–130 cm</td></tr>
+            <tr><td>2XS</td><td>44 cm</td><td>58 cm</td><td>32,5–37,5 kg</td><td>130–140 cm</td></tr>
+            <tr><td>XS</td><td>46,5 cm</td><td>61 cm</td><td>37,5–42,5 kg</td><td>140–150 cm</td></tr>
+            <tr><td>S</td><td>49 cm</td><td>64 cm</td><td>42,5–50 kg</td><td>150–160 cm</td></tr>
+            <tr><td>M</td><td>51 cm</td><td>67 cm</td><td>50–57,5 kg</td><td>160–170 cm</td></tr>
+            <tr><td>L</td><td>53 cm</td><td>70 cm</td><td>57,5–65 kg</td><td>170–175 cm</td></tr>
+            <tr><td>XL</td><td>55 cm</td><td>73 cm</td><td>65–72,5 kg</td><td>175–180 cm</td></tr>
+            <tr><td>2XL</td><td>57 cm</td><td>76 cm</td><td>72,5–80 kg</td><td>180–185 cm</td></tr>
+            <tr><td>3XL</td><td>59 cm</td><td>79 cm</td><td>80–87,5 kg</td><td>185–190 cm</td></tr>
+            <tr><td>4XL</td><td>61 cm</td><td>82 cm</td><td>87,5–95 kg</td><td>190–195 cm</td></tr>
+            <tr><td>5XL</td><td>65 cm</td><td>86 cm</td><td>95–107,5 kg</td><td>195–200 cm</td></tr>
+            <tr><td>6XL</td><td>67,5 cm</td><td>90 cm</td><td>107,5–115 kg</td><td>200–210 cm</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ APPEL FINAL ============ -->
+  <section class="section section-sombre">
+    <div class="conteneur">
+      <p class="sous-titre">Rejoins l'aventure</p>
+      <h2 class="titre-section">Porte nos couleurs</h2>
+      <p class="texte-large">
+        Le débardeur, c'est un bout de la famille Ciel &amp; Blanc que l'on porte avec fierté.
+        Rejoins celles et ceux qui affichent leurs couleurs, sur le terrain comme en dehors.
+      </p>
+      <p style="margin-top:24px;">
+        <a class="btn btn-primaire btn-grand" href="#">Je porte nos couleurs</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ PIED DE PAGE ============ -->
+  <footer class="pied">
+    <div class="conteneur">
+      <!-- Colonnes de liens (plan du site) -->
+      <div class="pied-colonnes">
+        <div class="pied-colonne">
+          <h4>L'association</h4>
+          <a href="index.html">Accueil</a>
+          <a href="qui-sommes-nous.html">Qui sommes-nous</a>
+          <a href="nos-projets.html">Nos projets</a>
+          <a href="actualites.html">Actualités</a>
+        </div>
+        <div class="pied-colonne">
+          <h4>Nous soutenir</h4>
+          <a href="adhesion.html">Adhérer</a>
+          <a href="boutique.html">Boutique</a>
+          <a href="faire-un-don.html">Faire un don</a>
+          <a href="sponsors.html">Ils nous soutiennent</a>
+          <a href="devenir-partenaire.html">Devenir partenaire</a>
+        </div>
+        <div class="pied-colonne">
+          <h4>Infos &amp; légal</h4>
+          <a href="contact.html">Contact</a>
+          <a href="faq.html">FAQ</a>
+          <a href="mentions-legales.html">Mentions légales</a>
+          <a href="cgv.html">CGV</a>
+          <a href="rgpd.html">RGPD</a>
+          <a href="statuts.html">Statuts</a>
+        </div>
+      </div>
+
+      <!-- Barre du bas : logo + contact + copyright -->
+      <div class="pied-bas">
+        <img class="pied-logo" src="assets/img/logo-r92.png" alt="Génération R92">
+        <p class="pied-contact">
+          <a href="mailto:generationr92@gmail.com">generationr92@gmail.com</a>
+          <span class="pied-sep">·</span>
+          <a href="https://instagram.com/generationr92" target="_blank" rel="noopener">Instagram @generationr92</a>
+        </p>
+        <p>© 2026 Génération R92 — Association de rugby, Hauts-de-Seine. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
