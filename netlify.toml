@@ -1,16 +1,22 @@
 # =========================================================
 # GÉNÉRATION R92 — Configuration Netlify
-# En-têtes de sécurité HTTP appliqués à tout le site une fois
-# déployé. Sans effet en local (le serveur python les ignore),
-# donc aucun impact sur le développement.
+# En-têtes HTTP appliqués une fois le site déployé. Sans effet en
+# local (le serveur python les ignore), donc aucun impact sur le
+# développement.
 #
 # Site 100 % statique : les seules ressources externes sont
 # Google Fonts (fonts.googleapis.com + fonts.gstatic.com).
 # La CSP autorise donc uniquement : le site lui-même ('self'),
 # ces deux domaines, et les styles « inline » (attributs style="…"
 # encore présents dans quelques pages).
+#
+# La page 404.html à la racine est servie automatiquement par
+# Netlify pour toute adresse inconnue : aucune règle à écrire.
 # =========================================================
 
+# ---------------------------------------------------------
+# 1. Sécurité — sur tout le site
+# ---------------------------------------------------------
 [[headers]]
   for = "/*"
   [headers.values]
@@ -22,5 +28,64 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     # Le site n'utilise ni géolocalisation, ni caméra, ni micro : on les désactive.
     Permissions-Policy = "geolocation=(), camera=(), microphone=()"
+    # Force le navigateur à n'utiliser que HTTPS pendant un an.
+    # « preload » est volontairement absent : l'inscription à la liste des
+    # navigateurs est un engagement difficile à défaire. À envisager plus tard,
+    # une fois le domaine définitif en place et éprouvé.
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
     # Politique de sécurité du contenu : liste blanche des sources autorisées.
+    # Note : les blocs <script type="application/ld+json"> ne sont pas exécutés
+    # comme du JavaScript, script-src 'self' ne les bloque donc pas.
     Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests"
+
+# ---------------------------------------------------------
+# 2. Cache
+# Les noms de fichiers ne portent pas d'empreinte (pas de build),
+# donc pas de cache « immutable » : un visiteur resterait bloqué sur
+# une vieille version. On calibre selon la fréquence de changement.
+# ---------------------------------------------------------
+
+# Les pages : toujours revalidées, pour que les corrections soient vues tout de suite.
+# Netlify renvoie un ETag, la revalidation ne coûte donc presque rien.
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Les contenus éditables à la main (actus, produits, projets, sponsors) :
+# une modification doit apparaître au rechargement suivant.
+[[headers]]
+  for = "/assets/data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# La charte et le script changent rarement, mais changent : une heure de cache,
+# puis réutilisation de la copie périmée le temps de récupérer la neuve.
+[[headers]]
+  for = "/assets/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, stale-while-revalidate=86400"
+
+[[headers]]
+  for = "/assets/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, stale-while-revalidate=86400"
+
+# Les images ne changent presque jamais et pèsent le plus lourd :
+# 30 jours de cache. Si une photo est remplacée, changer son nom de fichier
+# (ex. debardeur-1-v2.jpg) pour forcer le rechargement chez les visiteurs.
+[[headers]]
+  for = "/assets/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+# robots.txt et sitemap.xml : une journée suffit.
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/sitemap.xml"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
