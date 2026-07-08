@@ -945,6 +945,22 @@ body:has(.filigrane-page) .section:not(.section-sombre) + .section:not(.section-
   color: var(--bleu-vif);
   font-weight: 800;
 }
+/* Variante deux colonnes, pour les listes d'énumération courtes posées à côté
+   d'une image en portrait (ex. « Ce que nous recherchons » sur foire-a-tout).
+   column-count fixe le maximum, column-width la largeur minimale : le navigateur
+   retombe seul sur une colonne quand la place manque, sans point de rupture à
+   écrire. La colonne réellement utilisée n'est jamais plus étroite que
+   column-width — 180px couvrent le plus long intitulé (« Objets pour la
+   maison », 149px) plus le retrait de 30px de la coche, donc aucun retour à la
+   ligne. Descendre en dessous de 180px casserait cette garantie. */
+.points-forts.deux-colonnes {
+  column-count: 2;
+  column-width: 180px;
+  column-gap: 20px;
+}
+.points-forts.deux-colonnes li {
+  break-inside: avoid; /* un intitulé n'est jamais coupé entre deux colonnes */
+}
 /* Encadré d'avertissement (guide des tailles) */
 .avertissement {
   max-width: 760px;
