@@ -44,6 +44,10 @@
 </head>
 <body>
 
+  <!-- Lien d'évitement : premier élément focusable, invisible tant qu'on ne
+       tabule pas dessus. Permet de sauter le menu et d'aller au contenu. -->
+  <a class="lien-evitement" href="#contenu">Aller au contenu</a>
+
   <!-- ============ EN-TÊTE (fond navy, logo blanc) ============ -->
   <!-- Cet en-tête est identique sur toutes les pages. -->
   <header class="entete">
@@ -81,6 +85,9 @@
   </header>
 
   <!-- ============ HERO (grande bannière plein écran) ============ -->
+
+  <!-- ============ CONTENU PRINCIPAL ============ -->
+  <main id="contenu" tabindex="-1">
   <section class="hero">
     <div>
       <p class="hero-surtitre">Association de rugby · Hauts-de-Seine</p>
@@ -154,6 +161,8 @@
   </section>
 
   <!-- ============ PIED DE PAGE (fond navy, logo blanc) ============ -->
+  </main>
+
   <footer class="pied">
     <div class="conteneur">
       <!-- Colonnes de liens (plan du site) -->

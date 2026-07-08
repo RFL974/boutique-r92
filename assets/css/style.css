@@ -309,6 +309,33 @@ a:hover {
   white-space: nowrap;
   border: 0;
 }
+
+/* Lien d'évitement (« skip link ») : premier élément focusable de la page.
+   Invisible à la souris, il apparaît en haut à gauche dès qu'on l'atteint au
+   clavier (Tab), et permet de sauter les 12 liens du menu pour aller droit au
+   contenu. Exigence WCAG 2.4.1 « Contourner des blocs ». */
+.lien-evitement {
+  position: fixed;         /* fixed et non absolute : reste atteignable même page défilée */
+  top: -100px;             /* hors écran, mais dans le flux de tabulation */
+  left: 16px;
+  z-index: 200;            /* au-dessus de l'en-tête */
+  background: var(--bleu-vif);
+  color: var(--blanc);
+  font-weight: 600;
+  padding: 12px 20px;
+  border-radius: 0 0 10px 10px;
+  box-shadow: var(--ombre);
+  transition: top 0.15s ease-in-out;
+}
+.lien-evitement:focus {
+  top: 0;
+}
+/* <main> reçoit le focus au clic sur le lien d'évitement (tabindex="-1") :
+   pas de contour visible pour ce focus purement technique. */
+main:focus {
+  outline: none;
+}
+
 .hero h1 {
   font-family: 'Barlow Condensed', 'Segoe UI', sans-serif;
   font-weight: 800;

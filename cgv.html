@@ -37,6 +37,10 @@
 </head>
 <body>
 
+  <!-- Lien d'évitement : premier élément focusable, invisible tant qu'on ne
+       tabule pas dessus. Permet de sauter le menu et d'aller au contenu. -->
+  <a class="lien-evitement" href="#contenu">Aller au contenu</a>
+
   <!-- ============ EN-TÊTE ============ -->
   <header class="entete">
     <div class="conteneur">
@@ -78,6 +82,9 @@
   </div>
 
   <!-- ============ BANDEAU DE TITRE ============ -->
+
+  <!-- ============ CONTENU PRINCIPAL ============ -->
+  <main id="contenu" tabindex="-1">
   <section class="bandeau-titre">
     <div class="conteneur">
       <p class="sous-titre">Informations légales</p>
@@ -150,6 +157,9 @@
       </div>
     </div>
   </section>
+
+  </main>
+
 
   <!-- ============ PIED DE PAGE ============ -->
   <footer class="pied">
