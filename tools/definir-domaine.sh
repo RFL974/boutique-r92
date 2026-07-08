@@ -47,9 +47,15 @@ COMMENTAIRE_ATTENTE = """  <!-- Aperçu au partage (WhatsApp, Facebook, Instagra
 COMMENTAIRE_FINAL = "  <!-- Aperçu au partage (WhatsApp, Facebook, Instagram, Slack, X…) -->\n"
 
 def absolutiser_images(s):
-    return re.sub(
+    # og:image / twitter:image
+    s = re.sub(
         r'(<meta (?:property="og:image"|name="twitter:image") content=")(?:https?://[^"]*?/)?(assets/img/[^"]+)(">)',
         lambda m: m.group(1) + base + "/" + m.group(2) + m.group(3), s)
+    # JSON-LD : "logo" et "image" pointent sur des chemins relatifs
+    s = re.sub(
+        r'("(?:logo|image)": ")(?:https?://[^"]*?/)?(assets/img/[^"]+)(")',
+        lambda m: m.group(1) + base + "/" + m.group(2) + m.group(3), s)
+    return s
 
 # Priorités : l'accueil d'abord, puis les pages qui font agir, puis le légal.
 PRIORITE = {

@@ -41,6 +41,35 @@
 
   <!-- Feuille de style partagée (la charte) -->
   <link rel="stylesheet" href="assets/css/style.css">
+
+  <!-- Données structurées : l'association (SportsOrganization)
+       Les URL d'image deviendront absolues via tools/definir-domaine.sh -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SportsOrganization",
+      "name": "Génération R92",
+      "alternateName": "Génération R92 — Ciel & Blanc",
+      "description": "Association loi 1901 créée par les familles de l'École de Rugby du Racing 92. Elle fédère parents, joueurs et partenaires autour des valeurs du rugby.",
+      "sport": "Rugby",
+      "email": "generationr92@gmail.com",
+      "logo": "assets/img/logo-r92.png",
+      "image": "assets/img/og-image.jpg",
+      "slogan": "Plus qu'un club",
+      "areaServed": {
+        "@type": "AdministrativeArea",
+        "name": "Hauts-de-Seine"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressRegion": "Hauts-de-Seine",
+        "addressCountry": "FR"
+      },
+      "sameAs": [
+        "https://instagram.com/generationr92"
+      ]
+    }
+  </script>
 </head>
 <body>
 

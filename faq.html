@@ -34,6 +34,177 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
+
+  <!-- Données structurées : les 20 questions de la FAQ (FAQPage)
+       Extraites du HTML ci-dessous : garder les deux en phase. -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Qu'est-ce que Génération R92 ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Génération R92 est une association loi 1901 créée par les familles de l'École de Rugby du Racing 92. Elle rassemble parents, joueurs et partenaires autour d'un projet commun : promouvoir les valeurs du rugby et fédérer une communauté soudée autour des couleurs Ciel & Blanc."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Génération R92 est-elle liée officiellement au club professionnel Racing 92 ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Non, l'association n'a pas de lien juridique direct avec la SASP Racing 92. Elle est portée par la communauté des familles de l'École de Rugby, dans un esprit de soutien et de proximité avec le club."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qui gère l'association ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Génération R92 est administrée par un bureau bénévole (président, trésorière, secrétaire général), élu par les membres de l'association."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Comment devenir bénévole ou rejoindre le bureau ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Écrivez-nous à generationr92@gmail.com — nous avons toujours besoin de bonnes volontés, quel que soit le temps que vous pouvez y consacrer."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Pourquoi adhérer à Génération R92 ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "L'adhésion (20 € / an) soutient directement le fonctionnement de l'association et ses projets, notamment Le Grand Voyage. Elle fait aussi de vous un membre à part entière, avec voix aux assemblées générales."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "L'adhésion est-elle obligatoire pour inscrire mon enfant à l'École de Rugby ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Non, l'adhésion à Génération R92 est indépendante de l'inscription sportive au club, qui se fait directement auprès du Racing 92."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Comment adhérer ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "En ligne, via notre page sécurisée HelloAsso, accessible depuis la page Adhérer."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Où va mon argent quand je fais un don ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Vos dons financent en priorité la réduction du reste à charge des familles sur Le Grand Voyage, le matériel pédagogique et les événements fédérateurs de l'association."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Puis-je déduire mon don de mes impôts ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oui, Génération R92 est une association d'intérêt général : 66 % de votre don est déductible de votre impôt sur le revenu, dans la limite de 20 % de votre revenu imposable. Un reçu fiscal vous est délivré automatiquement par HelloAsso."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Puis-je faire un don régulier plutôt qu'unique ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oui, un don mensuel ou annuel est proposé directement sur la page HelloAsso, au moment du don."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qu'est-ce que Le Grand Voyage ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "C'est le projet phare de Génération R92 : offrir à une génération de jeunes joueurs une expérience sportive et humaine inoubliable, à travers un voyage rassemblant sport, découverte et cohésion d'équipe."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Comment le projet est-il financé ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Par un mélange d'adhésions, de dons, de partenariats d'entreprises et d'actions de la boutique, avec un objectif clair : que le reste à charge par famille reste le plus faible possible."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Mon enfant peut-il y participer ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Les modalités précises (critères, calendrier, sélection) seront communiquées aux familles concernées le moment venu."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Comment fonctionne la boutique de l'association ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nos articles (comme le débardeur Génération R92) sont vendus via notre page HelloAsso sécurisée, accessible depuis le site. Vous choisissez votre article, votre taille, vous payez en ligne en toute sécurité, et il vous est envoyé ou remis en main propre selon l'option choisie."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Les bénéfices de la boutique servent-ils à quelque chose de précis ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oui, les ventes contribuent au financement de nos projets, notamment Le Grand Voyage."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Puis-je récupérer ma commande sur place plutôt que de me faire livrer ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oui, le retrait au club est proposé comme option de livraison au moment de la commande."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Mon entreprise peut-elle soutenir Génération R92 ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oui, nous proposons plusieurs formules de partenariat, avec des contreparties adaptées à votre engagement. Rendez-vous sur notre page Devenir partenaire pour en savoir plus."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Le mécénat d'entreprise bénéficie-t-il aussi d'une réduction fiscale ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oui, à hauteur de 60 % du don, dans la limite de 0,5 % du chiffre d'affaires de l'entreprise."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Comment vous contacter ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Par mail à generationr92@gmail.com, ou via Instagram (@generationr92)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Où puis-je suivre l'actualité de l'association ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sur notre page Actualités et sur Instagram (@generationr92)."
+          }
+        }
+      ]
+    }
+  </script>
 </head>
 <body>
 

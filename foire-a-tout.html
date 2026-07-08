@@ -34,6 +34,39 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
+
+  <!-- Données structurées : l'événement Foire à Tout (Event)
+       Les URL d'image deviendront absolues via tools/definir-domaine.sh -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Event",
+      "name": "Foire à Tout du Plessis-Robinson",
+      "description": "Génération R92 tient un stand à la Foire à Tout du Plessis-Robinson. Donnez une seconde vie à vos objets au profit des projets de nos jeunes.",
+      "startDate": "2026-09-12T08:00:00+02:00",
+      "endDate": "2026-09-12T18:00:00+02:00",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "image": "assets/img/actu-foire-a-tout.jpg",
+      "location": {
+        "@type": "Place",
+        "name": "Centre d'entraînement du Racing 92",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Avenue Paul Langevin",
+          "postalCode": "92350",
+          "addressLocality": "Le Plessis-Robinson",
+          "addressCountry": "FR"
+        }
+      },
+      "organizer": {
+        "@type": "SportsOrganization",
+        "name": "Génération R92",
+        "sport": "Rugby",
+        "email": "generationr92@gmail.com"
+      }
+    }
+  </script>
 </head>
 <body>
 
