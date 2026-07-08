@@ -66,10 +66,17 @@ règle d'alternance détaillée dans STYLE-GUIDE.md).
 ## Lancer en local
 ```
 cd "/Users/romainrifleu/Desktop/Mes applications/BoutiqueR92-1"
-python3 -m http.server 8000
+python3 tools/serveur-local.py          # et non « -m http.server » : voir plus bas
 ```
 → http://localhost:8000 · Rechargement forcé Safari : **Cmd + Option + R** (Cmd+Maj+R sur Chrome).
 NB : les pages qui lisent un JSON (boutique, actus, sponsors) ne marchent QU'avec un serveur.
+
+**Aperçu intégré (preview) :** `python3 -m http.server` échoue ici (le module appelle
+`os.getcwd()` au chargement, refusé par le bac à sable). Et le projet étant sous `~/Desktop`,
+protégé par macOS (TCC), le processus de preview peut faire `stat()` mais pas `open()` sur les
+fichiers → 404 partout. Contournement : `./tools/miroir-preview.sh` crée un miroir en liens durs
+dans `/private/tmp/r92-preview`, sur lequel pointe `.claude/launch.json`. Lancer le script
+AVANT `preview_start`. Vrai correctif : sortir le projet de `~/Desktop`.
 
 ## Filigrane skyline continu — GÉNÉRALISÉ ✅
 Filigrane skyline pleine largeur (couche `.filigrane-page`) présent sur **les 17 pages sauf

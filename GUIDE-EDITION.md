@@ -26,7 +26,7 @@ Ouvre **`assets/data/actus.json`**. Chaque actualité ressemble à ceci :
 {
   "titre": "Reprise des entraînements",
   "date": "2026-08-25",
-  "image": "hero-defense.png",
+  "image": "hero-defense.jpg",
   "extrait": "Le texte court de l'actualité..."
 }
 ```
@@ -94,7 +94,7 @@ Ajoute un bloc `"evenement"` à l'entrée concernée. Exemple dans `actus.json` 
 {
   "titre": "Tournoi amical inter-clubs",
   "date": "2026-09-14",
-  "image": "hero-defense.png",
+  "image": "hero-defense.jpg",
   "extrait": "Génération R92 organise un tournoi amical…",
   "evenement": {
     "date": "2026-09-14",
@@ -167,7 +167,8 @@ Ouvre **`assets/data/sponsors.json`** :
 
 Conseils :
 - Logos de sponsors : de préférence sur **fond blanc ou transparent** (PNG).
-- L'image d'accueil `hero-defense.png` est **lourde** : compresse-la (par ex. sur
+- Les images du site sont déjà compressées (voir `tools/optimiser-images.sh`).
+  Pour une nouvelle photo lourde, compresse-la (par ex. sur
   https://squoosh.app) avant de mettre le site en ligne, pour un chargement rapide.
 
 ---

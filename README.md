@@ -112,19 +112,39 @@ Polices (chargées depuis Google Fonts, nécessitent une connexion internet) :
 ⚠️ Ouvrir `index.html` par double-clic **ne charge pas** les fichiers JSON
 (sécurité des navigateurs). Il faut un petit serveur local.
 
-### Option A — Python (déjà installé sur Mac)
+### Option A — le petit serveur du projet (recommandé)
 
 ```bash
 cd "/Users/romainrifleu/Desktop/Mes applications/BoutiqueR92-1"
-python3 -m http.server 8000
+python3 tools/serveur-local.py
 ```
 
 Puis ouvrir **http://localhost:8000** dans le navigateur.
 Pour arrêter : `Ctrl + C`.
 
+> `python3 -m http.server` fonctionne aussi, mais échoue dans certains
+> environnements restreints : le module appelle `os.getcwd()` au chargement.
+> `tools/serveur-local.py` évite ce piège et désactive le cache en développement.
+
 ### Option B — Extension VS Code « Live Server »
 
 Clic droit sur `index.html` → **Open with Live Server**.
+
+### Option C — Aperçu intégré de Claude Code
+
+Le projet vit sous `~/Desktop`, dossier protégé par macOS : le processus qui
+lance l'aperçu peut voir les fichiers mais pas les ouvrir. Il faut donc lui
+présenter le site par un chemin autorisé :
+
+```bash
+./tools/miroir-preview.sh     # miroir en liens durs dans /private/tmp/r92-preview
+```
+
+puis démarrer l'aperçu « site-r92 ». Les liens durs partagent les inodes du
+projet : une modification enregistrée en place est visible immédiatement.
+Le vrai correctif serait de déplacer le projet hors de `~/Desktop`, ou
+d'accorder l'accès au Bureau dans Réglages Système → Confidentialité et
+sécurité → Fichiers et dossiers.
 
 > Astuce Safari : pour forcer le rechargement après une modification,
 > menu **Affichage → Recharger la page depuis l'origine** (`Cmd + Option + R`).

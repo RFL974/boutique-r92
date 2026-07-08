@@ -4,7 +4,7 @@
     {
       "name": "site-r92",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8000"],
+      "runtimeArgs": ["/private/tmp/r92-preview/tools/serveur-local.py", "8000"],
       "port": 8000
     }
   ]
