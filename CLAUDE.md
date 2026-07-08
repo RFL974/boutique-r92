@@ -3,19 +3,37 @@
 Association de rugby (Hauts-de-Seine). Site **statique** : HTML + CSS + un peu de JS.
 **Aucun build, aucune base de données.** Hébergeable gratuitement (Netlify/Vercel).
 
+## Dépôt Git
+Dépôt privé `https://github.com/RFL974/boutique-r92.git`, branche `main`.
+Commiter par lots cohérents. **Ne jamais commiter `_sources/`** (déjà dans `.gitignore`).
+
 ## Structure
-- 18 pages `.html` à la racine (index, qui-sommes-nous, nos-projets, actualites, boutique,
-  adhesion, sponsors, faire-un-don, devenir-partenaire, contact, faq, mentions-legales,
-  cgv, rgpd, statuts, debardeur-r92, grand-voyage, foire-a-tout). `debardeur-r92`,
-  `grand-voyage` et `foire-a-tout` sont des pages « article/fiche » ouvertes depuis une carte
-  (boutique / nos projets / actualités — via le champ `page` du JSON correspondant).
+- 19 pages `.html` à la racine : les 18 pages du site + `404.html` (servie par Netlify).
+  `debardeur-r92`, `grand-voyage` et `foire-a-tout` sont des pages « article/fiche »
+  ouvertes depuis une carte (boutique / nos projets / actualités — via le champ `page`
+  du JSON correspondant).
 - `assets/css/style.css` (toute la charte), `assets/js/main.js` (charge les JSON, menu,
-  cartes cliquables ; **échappe le HTML injecté et filtre les liens** — voir `echapper()`
-  et `urlSure()`, garde-fous anti-XSS sur les données JSON), `assets/img/` (logo, hero,
-  favicon, skyline.svg, poteaux-rugby.svg,
-  noise.svg, hero-defense-watermark.png, equipe-qui-sommes-nous.jpg), `assets/data/`
+  cartes cliquables, bouton « Ajouter à mon agenda » ; **échappe le HTML injecté et filtre
+  les liens** — voir `echapper()` et `urlSure()`, garde-fous anti-XSS sur les données JSON),
+  `assets/img/` (logo, hero, filigrane, og-image, photos, svg — 2,3 Mo), `assets/data/`
   (actus.json, produits.json, projets.json, sponsors.json — **éditables à la main**).
+- `tools/definir-domaine.sh` (pose canonical + og:url + sitemap.xml le jour du domaine),
+  `tools/optimiser-images.sh` (régénère les images web depuis `_sources/`).
+- `_sources/` : photos et PNG d'origine. **Hors dépôt et hors déploiement.**
+- `robots.txt`, `netlify.toml` (sécurité + cache).
 - Docs : `README.md`, `GUIDE-EDITION.md`, **`STYLE-GUIDE.md`** (charte graphique détaillée).
+
+## Règles SEO / accessibilité (acquises — ne pas régresser)
+- **Un seul `<h1>` par page** : le titre du `.bandeau-titre` (et non un `<h2>`).
+  Aucun saut de niveau. Le pied de page utilise `<h2 class="pied-titre">`.
+- Chaque page a `<main id="contenu" tabindex="-1">` et, en tête de `<body>`, le lien
+  d'évitement `<a class="lien-evitement" href="#contenu">`.
+- Chaque page porte ses balises Open Graph + Twitter Card + `theme-color`.
+  ⚠️ **Pas de `og:url` ni de `canonical` tant qu'il n'y a pas de domaine** (voir plus bas).
+- `<title>` en « Sujet | Génération R92 » ; `meta description` de 110 à 160 caractères.
+- Toute `<img>` porte `width`, `height` et `decoding="async"` ; `loading="lazy"` sauf
+  au-dessus de la ligne de flottaison (logos d'en-tête/hero, filigrane).
+- JSON-LD : `SportsOrganization` (index), `Event` (foire-a-tout), `FAQPage` (faq).
 
 ## Charte (couleurs — NE PAS en introduire d'autres)
 - Navy `#0C1C2E` · Navy clair `#16304a` · Ciel `#B8D8F8` · Bleu vif `#2E8FE0` · Blanc `#FFFFFF`
@@ -40,8 +58,10 @@ règle d'alternance détaillée dans STYLE-GUIDE.md).
   Nous soutenir ▾ (Adhérer, Boutique, Faire un don, Ils nous soutiennent, Devenir partenaire) ·
   Contact. Pied de page en 3 colonnes + email `generationr92@gmail.com` + Instagram `@generationr92`.
 - En-tête et pied de page sont **copiés dans chaque page** (pas d'include) → une modif de menu
-  se répercute sur les 18 fichiers (souvent fait par petit script Python).
-- Liens HelloAsso encore en `#` (adhésion, dons, boutique, débardeur).
+  se répercute sur les 19 fichiers (souvent fait par petit script Python).
+- Liens HelloAsso encore en `#` (adhésion, dons, boutique, débardeur, Grand Voyage).
+- Images : ne jamais remettre de PNG lourd. Les originaux vivent dans `_sources/`,
+  `tools/optimiser-images.sh` régénère les versions web (JPEG q55, `sips` suffit).
 
 ## Lancer en local
 ```
@@ -54,7 +74,7 @@ NB : les pages qui lisent un JSON (boutique, actus, sponsors) ne marchent QU'ave
 ## Filigrane skyline continu — GÉNÉRALISÉ ✅
 Filigrane skyline pleine largeur (couche `.filigrane-page`) présent sur **les 17 pages sauf
 `index.html`** (l'accueil en est volontairement exclu). Chaque page a, juste après `</header>` :
-`<div class="filigrane-page"><img src="assets/img/hero-defense-watermark.png" alt="" aria-hidden="true"></div>`
+`<div class="filigrane-page"><img src="assets/img/hero-defense-watermark.jpg" ...></div>`
 et la police **Barlow** dans son lien Google Fonts (`Barlow:wght@400;500;600;700`).
 CSS global dans `style.css` : panneau translucide `body:has(.filigrane-page)
 .section:not(.section-sombre) > .conteneur::before` (blanc 66 %), corps en Barlow, texte ardoise.
@@ -62,9 +82,14 @@ Réglages validés : filigrane pleine largeur `top:80px`, opacité 10 % ; pannea
 texte ardoise `#3B4A63` ; corps Barlow.
 
 ## Décisions en attente
+- **Nom de domaine** : aucun choisi (décision utilisateur, 2026-07-08). Conséquence assumée :
+  ni `canonical`, ni `og:url`, ni `sitemap.xml`. **Dès qu'un domaine existe, lancer
+  `./tools/definir-domaine.sh https://…`** — le rappeler à l'utilisateur s'il parle de
+  domaine, de déploiement ou de mise en ligne publique.
 - **Filigrane navy** : on GARDE (décision utilisateur, 2026-07-07) l'ancien filigrane des sections
   navy (skyline.svg sur la 1re section navy, poteaux-rugby.svg sur les suivantes, via
   `.section-sombre::after`), EN PLUS du filigrane continu. À réévaluer plus tard si besoin.
+- **Mentions légales** : 9 marqueurs `[À DÉFINIR]` / `[À COMPLÉTER]` — à remplir par l'association.
 
 ## Note environnement
 L'assistant ne peut pas produire de captures ici (pas de Chrome connecté, preview sandboxée) :
