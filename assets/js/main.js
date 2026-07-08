@@ -295,7 +295,7 @@ async function chargerActus() {
         : '';
       return `
         <article class="${classeCarte}"${dataPage}>
-          <img src="assets/img/${echapper(actu.image)}" alt="${echapper(actu.titre)}">
+          <img src="assets/img/${echapper(actu.image)}" alt="${echapper(actu.titre)}" loading="lazy" decoding="async">
           <div class="carte-corps">
             <span class="carte-date">${echapper(formaterDate(actu.date))}</span>
             ${titre}
@@ -345,7 +345,7 @@ async function chargerProduits() {
       // Visuel : une vraie image si "image" est renseigné, sinon une vignette
       // placeholder à la marque (monogramme R92 sur fond navy).
       const visuel = produit.image && produit.image !== ''
-        ? `<img src="assets/img/${echapper(produit.image)}" alt="${echapper(produit.nom)}">`
+        ? `<img src="assets/img/${echapper(produit.image)}" alt="${echapper(produit.nom)}" loading="lazy" decoding="async">`
         : `<div class="produit-vignette" aria-hidden="true"><b>R92</b><span>Photo à venir</span></div>`;
       return `
         <article class="${classeCarte}"${dataPage}>
@@ -386,7 +386,7 @@ async function chargerSponsors() {
       // Logo : une image si "logo" est renseigné, sinon une tuile navy provisoire
       // affichant le monogramme « R92 » (rendu par la classe .sponsor-logo-vide).
       const logo = s.logo && s.logo !== ''
-        ? `<img class="sponsor-logo" src="assets/img/${echapper(s.logo)}" alt="${echapper(s.nom)}">`
+        ? `<img class="sponsor-logo" src="assets/img/${echapper(s.logo)}" alt="${echapper(s.nom)}" loading="lazy" decoding="async">`
         : `<div class="sponsor-logo sponsor-logo-vide" aria-hidden="true"></div>`;
       // Ville : affichée seulement si renseignée.
       const ville = s.ville && s.ville !== ''
@@ -443,7 +443,7 @@ async function chargerProjets() {
         : `<h3>${echapper(projet.nom)}</h3>`;
       // Visuel : vraie image si "image" est renseigné, sinon vignette à la marque.
       const visuel = projet.image && projet.image !== ''
-        ? `<img src="assets/img/${echapper(projet.image)}" alt="${echapper(projet.nom)}">`
+        ? `<img src="assets/img/${echapper(projet.image)}" alt="${echapper(projet.nom)}" loading="lazy" decoding="async">`
         : `<div class="produit-vignette" aria-hidden="true"><b>R92</b><span>Photo à venir</span></div>`;
       // Bouton "Lire l'article" uniquement si un article est lié.
       const bouton = page

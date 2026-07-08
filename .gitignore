@@ -45,3 +45,7 @@ node_modules/
 .env
 .env.*
 !.env.example
+
+# Photos et PNG d'origine (lourds). Conservés sur disque, hors dépôt et hors
+# déploiement. Récupérables dans l'historique Git : voir _sources/LISEZ-MOI.txt
+_sources/

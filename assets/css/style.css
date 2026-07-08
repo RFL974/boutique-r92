@@ -263,7 +263,7 @@ a:hover {
   /* Image de fond + voile navy semi-transparent pour la lisibilité du texte */
   background:
     linear-gradient(rgba(8, 20, 32, 0.45) 0%, rgba(10, 24, 40, 0.72) 55%, rgba(12, 28, 46, 0.96) 100%),
-    url('../img/hero-defense.png') center / cover no-repeat;
+    url('../img/hero-defense.jpg') center / cover no-repeat;
   padding: 48px 20px;
   overflow: hidden;
 }
@@ -421,7 +421,7 @@ main:focus {
   left: 50%;
   transform: translateX(-50%);
   width: 100%;          /* pleine largeur : vrai fond, pas une vignette */
-  max-width: 2544px;    /* largeur native de l'image (pas d'agrandissement flou) */
+  max-width: 2544px;    /* le filigrane s'étire au besoin : à 10 % d'opacité, invisible */
   height: auto;
   opacity: 0.10;
   pointer-events: none; /* ne bloque aucun clic */
