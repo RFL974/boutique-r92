@@ -296,8 +296,8 @@ a:hover {
 }
 
 /* Utilitaire d'accessibilité : masque un élément à l'écran tout en le gardant
-   lisible par les lecteurs d'écran (« screen-reader only »). Non utilisé
-   actuellement, conservé car réutilisable (ex. titre masqué pour le SEO). */
+   lisible par les lecteurs d'écran (« screen-reader only »). Sert aux titres de
+   section masqués (boutique, actualités, projets) et au lien d'évitement. */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -1118,7 +1118,7 @@ body:has(.filigrane-page) .section:not(.section-sombre) + .section:not(.section-
   max-width: 900px;
   margin: 0 auto 32px;
 }
-.pied-colonne h4 {
+.pied-colonne .pied-titre {
   color: var(--blanc);
   font-size: 0.95rem;
   text-transform: uppercase;
