@@ -264,6 +264,58 @@ function initBlocsAgenda() {
 }
 
 /* ---------------------------------------------------------
+   ITINÉRAIRE — bouton « On y va ! » (ouvre l'app de navigation)
+   Sur mobile, un même bouton doit ouvrir l'application de
+   navigation de la personne. Il n'existe pas de solution
+   universelle : chaque système a sa mécanique.
+   --------------------------------------------------------- */
+
+/* Construit l'URL d'itinéraire adaptée à l'appareil, à partir d'une adresse en
+   texte. Le but : ouvrir SON application de navigation.
+   - Android : schéma geo: → le système propose les apps installées
+     (Google Maps, Waze, Mappy…) et c'est la personne qui choisit.
+   - iPhone / iPad : Plans (iOS n'offre pas de sélecteur d'application).
+   - Ordinateur : Google Maps sur le web.
+   Renvoie toujours une URL http(s) ou geo: — jamais un schéma exécutable. */
+function lienItineraire(lieu) {
+  const q = encodeURIComponent(String(lieu == null ? '' : lieu).trim());
+  if (!q) return '';
+  const ua = navigator.userAgent || '';
+  if (/iPhone|iPad|iPod/i.test(ua)) return 'https://maps.apple.com/?q=' + q;
+  if (/Android/i.test(ua)) return 'geo:0,0?q=' + q;
+  return 'https://www.google.com/maps/search/?api=1&query=' + q;
+}
+
+/* Remplace les éléments [data-itineraire] par un bouton « On y va ! » qui ouvre
+   l'app de navigation vers l'adresse (attribut data-lieu). Même principe que
+   initBlocsAgenda : l'élément d'origine sert de gabarit (ses classes et son
+   texte sont repris). Sans data-lieu exploitable, l'élément est retiré. */
+function initBlocsItineraire() {
+  document.querySelectorAll('[data-itineraire]').forEach(function (bloc) {
+    const lieu = bloc.getAttribute('data-lieu');
+    const href = lienItineraire(lieu);
+    if (!href) { bloc.remove(); return; }
+
+    let classes = (bloc.getAttribute('class') || '').trim();
+    if (!/(^|\s)btn(\s|$)/.test(classes)) classes = ('btn ' + classes).trim();
+    const label = (bloc.textContent || '').trim() || 'On y va !';
+
+    const a = document.createElement('a');
+    a.className = classes;
+    a.href = href;
+    // Les liens http(s) (ordinateur) s'ouvrent dans un nouvel onglet ; les
+    // schémas geo:/maps: (mobile) ouvrent directement l'application.
+    if (/^https?:/i.test(href)) { a.target = '_blank'; a.rel = 'noopener'; }
+    a.setAttribute('aria-label', label + ' — itinéraire vers ' + (lieu || 'l’événement'));
+    // Icône épingle (hérite de la couleur du texte) + libellé échappé.
+    a.innerHTML = '<svg class="btn-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+      + '<path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.6A2.6 2.6 0 1 1 12 6.4a2.6 2.6 0 0 1 0 5.2z"/>'
+      + '</svg><span>' + echapper(label) + '</span>';
+    bloc.replaceWith(a);
+  });
+}
+
+/* ---------------------------------------------------------
    CHARGEMENT DES ACTUALITÉS
    Cherche un conteneur avec l'id "liste-actus" ; s'il
    existe (page Actualités), on remplit les cartes.
@@ -581,4 +633,5 @@ document.addEventListener('DOMContentLoaded', function () {
   initMenuMobile();
   initCarrousel();
   initBlocsAgenda();
+  initBlocsItineraire();
 });

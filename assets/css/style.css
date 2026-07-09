@@ -139,6 +139,28 @@ a:hover {
   color: var(--navy);
 }
 
+/* Bouton « On y va ! » : itinéraire vers l'événement. Le contenu (icône épingle
+   + libellé) est injecté par main.js. On aligne l'épingle avec le texte. */
+.btn-itineraire {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-itineraire .btn-icone {
+  width: 1.15em;
+  height: 1.15em;
+  fill: currentColor; /* l'épingle prend la couleur du texte du bouton */
+  flex: none;
+}
+/* Ce bouton n'a de sens que sur un téléphone (il ouvre l'app de navigation).
+   Sur ordinateur (≥ 760px), on le masque : la règle vient après .btn-itineraire
+   pour l'emporter sur le display:inline-flex ci-dessus. */
+@media (min-width: 760px) {
+  .btn-itineraire {
+    display: none;
+  }
+}
+
 /* ---------------------------------------------------------
    4. EN-TÊTE (toujours sur fond NAVY car le logo est blanc)
    --------------------------------------------------------- */
