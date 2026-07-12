@@ -51,7 +51,7 @@ BoutiqueR92-1/
 │
 └── assets/
     ├── css/style.css         → Toute la charte graphique (couleurs, mise en page)
-    ├── js/main.js            → Charge les JSON, menu, cartes, bouton « Ajouter à mon agenda »
+    ├── js/main.js            → Charge les JSON, menu, cartes, boutons « Ajouter à mon agenda » (.ics) et « On y va ! » (itinéraire mobile)
     ├── img/                  → Logo, hero, filigrane, photos, og-image (2,3 Mo au total)
     └── data/
         ├── actus.json        → ✏️ Les actualités

@@ -13,8 +13,10 @@ Commiter par lots cohérents. **Ne jamais commiter `_sources/`** (déjà dans `.
   ouvertes depuis une carte (boutique / nos projets / actualités — via le champ `page`
   du JSON correspondant).
 - `assets/css/style.css` (toute la charte), `assets/js/main.js` (charge les JSON, menu,
-  cartes cliquables, bouton « Ajouter à mon agenda » ; **échappe le HTML injecté et filtre
-  les liens** — voir `echapper()` et `urlSure()`, garde-fous anti-XSS sur les données JSON),
+  cartes cliquables, bouton « Ajouter à mon agenda » [`data-agenda`→.ics] et bouton
+  « On y va ! » [`data-itineraire`→app de navigation, mobile only, `.btn-itineraire`] ;
+  **échappe le HTML injecté et filtre les liens** — voir `echapper()` et `urlSure()`,
+  garde-fous anti-XSS sur les données JSON),
   `assets/img/` (logo, hero, filigrane, og-image, photos, svg — 2,3 Mo), `assets/data/`
   (actus.json, produits.json, projets.json, sponsors.json — **éditables à la main**).
 - `tools/definir-domaine.sh` (pose canonical + og:url + sitemap.xml le jour du domaine),

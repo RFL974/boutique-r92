@@ -113,6 +113,9 @@ Bloc centré sur fond clair (titre + phrase + boutons).
 - `.btn.btn-contour` : contour clair, **sur fond navy** (hero).
 - `.btn.btn-contour-bleu` : contour bleu, **sur fond clair** (action secondaire).
 - `.btn-grand` : version large pour les CTA importants.
+- `.btn-itineraire` : bouton « On y va ! » (épingle + libellé), ouvre l'app de
+  navigation vers un lieu. **Masqué sur ordinateur** (≥ 760px) : n'a de sens que
+  sur téléphone. Généré par `main.js` depuis un élément `[data-itineraire]`.
 
 ---
 

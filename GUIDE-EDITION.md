@@ -123,15 +123,42 @@ Colle ce bloc à l'endroit voulu de la page (par ex. sous le titre de l'événem
 <div class="bloc-agenda" data-agenda
      data-titre="Foire à Tout du Plessis-Robinson"
      data-date="2026-09-12"
-     data-heure-debut="09:00"
+     data-heure-debut="08:00"
      data-heure-fin="18:00"
-     data-lieu="Centre d'entraînement du Racing 92, Le Plessis-Robinson"
+     data-lieu="Centre d'entraînement du Racing 92, 11 avenue Paul Langevin, 92350 Le Plessis-Robinson"
      data-description="Stand Génération R92 — vos dons financent nos projets."
      data-rappel="les-deux"></div>
 ```
 
 Mêmes règles que ci-dessus (date + horaire + lieu obligatoires). Le bouton se
 construit tout seul au chargement de la page.
+
+---
+
+## 3 ter. Ajouter un bouton « On y va ! » (itinéraire)
+
+Sur la fiche Foire à Tout, sous les boutons, un bouton **« On y va ! »** avec une épingle
+apparaît **sur téléphone uniquement**. En le touchant, la personne ouvre l'itinéraire vers
+le lieu dans son application de navigation :
+
+- **Android** : le téléphone propose les applications installées (Google Maps, Waze, Mappy…)
+  et **la personne choisit** ;
+- **iPhone / iPad** : ouvre **Plans** (iOS ne propose pas de choix) ;
+- **ordinateur** : le bouton est **masqué** (il n'a de sens que sur un téléphone).
+
+Pour le mettre sur une **autre page** (un autre événement), colle ce bloc à l'endroit voulu,
+en changeant seulement l'adresse dans `data-lieu` :
+
+```html
+<a class="btn btn-primaire btn-grand btn-itineraire" data-itineraire
+   data-lieu="Centre d'entraînement du Racing 92, 11 avenue Paul Langevin, 92350 Le Plessis-Robinson">On y va !</a>
+```
+
+- `data-lieu` : **obligatoire** — l'adresse, la plus complète possible (avec le **numéro**
+  de rue) pour que la navigation tombe au bon endroit. C'est **la même adresse** que le
+  `data-lieu` du bouton agenda : garde les deux identiques.
+- La classe `btn-itineraire` est ce qui **masque le bouton sur ordinateur** : ne l'enlève pas.
+- Le texte entre `>` et `</a>` (« On y va ! ») peut être changé si tu veux un autre libellé.
 
 ---
 
