@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tournoi | Génération R92</title>
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/img/logo-r92.png">
+  <meta name="description" content="Le tournoi de rugby de Génération R92 : infos pratiques, affiche, et suivi en direct des poules, du planning et des scores.">
+  <meta name="theme-color" content="#0C1C2E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <a class="lien-evitement" href="#contenu">Aller au contenu</a>
+
+  <!-- ============ EN-TÊTE ============ -->
+  <header class="entete">
+    <div class="conteneur">
+      <a class="logo" href="index.html">
+        <img src="assets/img/logo-r92.png" alt="Génération R92" width="700" height="558" decoding="async">
+      </a>
+      <button class="nav-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false">&#9776;</button>
+      <nav class="nav">
+        <a href="index.html">Accueil</a>
+        <div class="menu-deroulant">
+          <button class="menu-deroulant-btn actif" type="button" aria-haspopup="true" aria-expanded="false">L'association</button>
+          <div class="menu-deroulant-contenu">
+            <a href="qui-sommes-nous.html">Qui sommes-nous</a>
+            <a href="nos-projets.html">Nos projets</a>
+            <a href="actualites.html" class="actif">Actualités</a>
+          </div>
+        </div>
+        <div class="menu-deroulant">
+          <button class="menu-deroulant-btn" type="button" aria-haspopup="true" aria-expanded="false">Nous soutenir</button>
+          <div class="menu-deroulant-contenu">
+            <a href="adhesion.html">Adhérer</a>
+            <a href="boutique.html">Boutique</a>
+            <a href="faire-un-don.html">Faire un don</a>
+            <a href="sponsors.html">Ils nous soutiennent</a>
+            <a href="devenir-partenaire.html">Devenir partenaire</a>
+          </div>
+        </div>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="filigrane-page">
+    <img src="assets/img/hero-defense-watermark.jpg" alt="" aria-hidden="true" width="1800" height="1177" decoding="async">
+  </div>
+
+  <!-- Fil d'Ariane -->
+  <nav class="fil-ariane" aria-label="Fil d'Ariane">
+    <div class="conteneur">
+      <a href="index.html">Accueil</a><span class="sep">›</span><a href="actualites.html">Actualités</a><span class="sep">›</span><span class="actuel" id="art-fil">Tournoi</span>
+    </div>
+  </nav>
+
+  <!-- ============ CONTENU (rempli par main.js → chargerArticleTournoi) ============ -->
+  <main id="article-tournoi" tabindex="-1">
+    <section class="bandeau-titre">
+      <div class="conteneur">
+        <p class="sous-titre">Actualité · Tournoi</p>
+        <h1 class="titre-section" id="art-titre">Chargement…</h1>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="conteneur">
+        <div class="presentation-accueil" style="align-items:start;">
+          <div>
+            <p class="sous-titre">Le tournoi</p>
+            <h2 class="titre-section">Présentation</h2>
+            <p class="texte-large" id="art-description"></p>
+          </div>
+          <div id="art-affiche-bloc">
+            <img id="art-affiche" src="" alt="Affiche du tournoi"
+                 style="width:100%; border-radius:14px; box-shadow:var(--ombre);" loading="lazy" decoding="async">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-sombre" style="padding-bottom:160px;">
+      <div class="conteneur">
+        <p class="sous-titre">Pratique</p>
+        <h2 class="titre-section">Infos pratiques</h2>
+        <ul class="points-forts">
+          <li><strong>Quand :</strong> <span id="art-date">À venir</span>.</li>
+          <li><strong>Où :</strong> <span id="art-lieu">À préciser</span>.</li>
+        </ul>
+
+        <!-- Boutons : « Voir le tournoi » (lien fixe) + agenda .ics + itinéraire, ajoutés par main.js -->
+        <div class="hero-boutons" id="art-boutons" style="justify-content:flex-start; margin-top:28px;">
+          <a class="btn btn-primaire btn-grand" href="https://rfl974.github.io/tournoi-r92/tournoi.html" target="_blank" rel="noopener">Voir le tournoi en direct</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ PIED DE PAGE ============ -->
+  <footer class="pied">
+    <div class="conteneur">
+      <div class="pied-colonnes">
+        <div class="pied-colonne">
+          <h2 class="pied-titre">L'association</h2>
+          <a href="index.html">Accueil</a>
+          <a href="qui-sommes-nous.html">Qui sommes-nous</a>
+          <a href="nos-projets.html">Nos projets</a>
+          <a href="actualites.html">Actualités</a>
+        </div>
+        <div class="pied-colonne">
+          <h2 class="pied-titre">Nous soutenir</h2>
+          <a href="adhesion.html">Adhérer</a>
+          <a href="boutique.html">Boutique</a>
+          <a href="faire-un-don.html">Faire un don</a>
+          <a href="sponsors.html">Ils nous soutiennent</a>
+          <a href="devenir-partenaire.html">Devenir partenaire</a>
+        </div>
+        <div class="pied-colonne">
+          <h2 class="pied-titre">Infos &amp; légal</h2>
+          <a href="contact.html">Contact</a>
+          <a href="faq.html">FAQ</a>
+          <a href="mentions-legales.html">Mentions légales</a>
+          <a href="cgv.html">CGV</a>
+          <a href="rgpd.html">RGPD</a>
+          <a href="statuts.html">Statuts</a>
+        </div>
+      </div>
+      <div class="pied-bas">
+        <img class="pied-logo" src="assets/img/logo-r92.png" alt="Génération R92" width="700" height="558" loading="lazy" decoding="async">
+        <p class="pied-contact">
+          <a href="mailto:generationr92@gmail.com">generationr92@gmail.com</a>
+          <span class="pied-sep">·</span>
+          <a href="https://instagram.com/generationr92" target="_blank" rel="noopener">Instagram @generationr92</a>
+        </p>
+        <p>© 2026 Génération R92 — Association de rugby, Hauts-de-Seine. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -331,34 +331,68 @@ function initBlocsItineraire() {
    simplement si `tournoi_publie` vaut "oui".
    --------------------------------------------------------- */
 const TOURNOI_API_URL = 'https://script.google.com/macros/s/AKfycbz_jRSNnFCjJvhUiofO6n3lg41ev8_9UDuvVGB_KDpm_EYZVSgwyi55MG8AfKu2JRQFBA/exec';
-const TOURNOI_PAGE_URL = 'https://rfl974.github.io/tournoi-r92/tournoi.html';
+const TOURNOI_PAGE_URL = 'https://rfl974.github.io/tournoi-r92/tournoi.html';  // le tournoi EN DIRECT
+const TOURNOI_ARTICLE_URL = 'tournoi.html';                                    // la page d'article (ce site)
 
-/* Demande au backend du tournoi s'il est publié. Renvoie false en cas de souci
-   (réseau, tournoi absent…) avec un délai max de 4 s pour ne jamais bloquer la page. */
-async function tournoiEstPublie() {
+/* Cache des infos du tournoi (une seule requête par page). */
+let __infosTournoi;
+
+/* Récupère les infos du tournoi depuis le backend (nom, date, lieu, description, affiche,
+   publié ?). Renvoie un objet, ou un objet { publie:false } en cas de souci (délai max 4 s
+   pour ne jamais bloquer la page). Les deux sites partagent le même backend Apps Script. */
+async function chargerInfosTournoi() {
+  if (__infosTournoi) return __infosTournoi;
   try {
     const ctrl = new AbortController();
-    const minuteur = setTimeout(function () { ctrl.abort(); }, 4000);
+    const minuteur = setTimeout(function () { ctrl.abort(); }, 9000); // Apps Script démarre parfois lentement
     const reponse = await fetch(TOURNOI_API_URL + '?action=getConfig', { signal: ctrl.signal });
     clearTimeout(minuteur);
-    if (!reponse.ok) return false;
-    const data = await reponse.json();
-    return String(data && data.global && data.global.tournoi_publie).toLowerCase() === 'oui';
+    if (!reponse.ok) return { publie: false };
+    const g = (await reponse.json()).global || {};
+    __infosTournoi = {
+      publie: String(g.tournoi_publie).toLowerCase() === 'oui',
+      nom: g.tournoi_nom || '',
+      date: g.tournoi_date || '',
+      lieu: g.tournoi_lieu || '',
+      description: g.tournoi_description || '',
+      afficheId: g.tournoi_affiche_id || '',
+      heureDebut: g.heure_debut || '',
+      heureFin: g.heure_fin || ''
+    };
+    return __infosTournoi;
   } catch (e) {
-    return false;
+    return { publie: false };
   }
 }
 
-/* L'entrée d'actualité « Tournoi » (même format que actus.json). Le champ `page`
-   pointe vers la page publique du tournoi (lien externe autorisé par urlSure). */
-function actuTournoi() {
+/* URL d'affichage d'une affiche stockée dans Google Drive (CDN lh3, largeur maxi w).
+   NB : on utilise lh3.googleusercontent.com (et non drive.google.com/thumbnail) car ce
+   dernier bloque le hotlinking depuis un autre site. */
+function urlAffiche(id, largeur) {
+  return 'https://lh3.googleusercontent.com/d/' + encodeURIComponent(id) + '=w' + (largeur || 1000);
+}
+
+/* Coupe un texte à `max` caractères (sans couper un mot au milieu) + « … ». */
+function extraitCourt(texte, max) {
+  texte = String(texte == null ? '' : texte).trim();
+  max = max || 160;
+  if (texte.length <= max) return texte;
+  const coupe = texte.slice(0, max);
+  return coupe.slice(0, coupe.lastIndexOf(' ') > 0 ? coupe.lastIndexOf(' ') : max).trim() + '…';
+}
+
+/* L'entrée d'actualité « Tournoi » (même format que actus.json), construite depuis les
+   infos réelles. `imageUrl` = l'affiche (Drive) ; `page` = la page d'article de ce site. */
+function actuTournoi(t) {
   return {
-    titre: '🏉 Tournoi Génération R92 — en direct',
-    date: new Date().toISOString().slice(0, 10),
-    image: 'hero-defense.jpg',
-    extrait: 'Le tournoi est ouvert ! Poules, planning et scores en direct : suis ton équipe et les classements en temps réel.',
-    page: TOURNOI_PAGE_URL,
-    boutonTexte: 'Voir le tournoi'
+    titre: t.nom || 'Tournoi Génération R92',
+    date: t.date || new Date().toISOString().slice(0, 10),
+    imageUrl: t.afficheId ? urlAffiche(t.afficheId, 800) : '',
+    image: 'hero-defense.jpg', // secours si aucune affiche
+    extrait: extraitCourt(t.description, 160) ||
+      'Le tournoi est ouvert ! Poules, planning et scores en direct.',
+    page: TOURNOI_ARTICLE_URL,
+    boutonTexte: 'Découvrir le tournoi'
   };
 }
 
@@ -367,59 +401,135 @@ function actuTournoi() {
    Cherche un conteneur avec l'id "liste-actus" ; s'il
    existe (page Actualités), on remplit les cartes.
    --------------------------------------------------------- */
+let __actusBase = null; // les actus du JSON (sans la carte tournoi)
+
 async function chargerActus() {
   const conteneur = document.getElementById('liste-actus');
   if (!conteneur) return; // Pas sur la page actus : on ne fait rien.
 
   try {
-    // On charge les actus ET l'état de publication du tournoi en parallèle.
-    // Si le fichier ne se charge pas (404, ouverture sans serveur…), on bascule
-    // dans le catch pour afficher un message clair au lieu de rester figé.
-    const [reponse, tournoiPublie] = await Promise.all([
-      fetch('assets/data/actus.json'),
-      tournoiEstPublie()
-    ]);
+    const reponse = await fetch('assets/data/actus.json');
     if (!reponse.ok) throw new Error('Réponse HTTP ' + reponse.status);
-    let actus = await reponse.json();
-    // Si le tournoi est publié, sa carte passe EN TÊTE des actualités.
-    if (tournoiPublie) actus = [actuTournoi()].concat(actus);
-
-    // On construit le HTML de toutes les cartes.
-    conteneur.innerHTML = actus.map(function (actu) {
-      // "page" = article détaillé (facultatif). S'il est renseigné, la carte
-      // devient cliquable, le titre devient un lien et un bouton "Lire l'article"
-      // apparaît. Sinon, la carte reste une simple brève non cliquable.
-      const page = actu.page && actu.page !== '' ? urlSure(actu.page) : '';
-      const classeCarte = page ? 'carte carte-cliquable' : 'carte';
-      const dataPage = page ? ` data-page="${echapper(page)}"` : '';
-      const titre = page
-        ? `<h3><a href="${echapper(page)}">${echapper(actu.titre)}</a></h3>`
-        : `<h3>${echapper(actu.titre)}</h3>`;
-      const texteBouton = actu.boutonTexte ? actu.boutonTexte : "Lire l'article";
-      const bouton = page
-        ? `<a class="btn btn-primaire" href="${echapper(page)}">${echapper(texteBouton)}</a>`
-        : '';
-      return `
-        <article class="${classeCarte}"${dataPage}>
-          <img src="assets/img/${echapper(actu.image)}" alt="${echapper(actu.titre)}" loading="lazy" decoding="async">
-          <div class="carte-corps">
-            <span class="carte-date">${echapper(formaterDate(actu.date))}</span>
-            ${titre}
-            <p>${echapper(actu.extrait)}</p>
-            ${bouton}
-          </div>
-        </article>
-      `;
-    }).join('');
-    appliquerDispositionGrille(conteneur, actus.length);
-    initCartesCliquables(conteneur);
-    ajouterAgendaCartes(conteneur, actus);
+    __actusBase = await reponse.json();
+    rendreActus(conteneur, __actusBase); // affichage IMMÉDIAT des actus
   } catch (erreur) {
     // Message affiché si le fichier ne se charge pas (ex : ouvert sans serveur local).
     conteneur.innerHTML =
       '<p class="message-info">Impossible de charger les actualités. ' +
       'Lance le site avec un petit serveur local (voir instructions).</p>';
     console.error(erreur);
+    return;
+  }
+
+  // Sans bloquer l'affichage : si le tournoi est publié, on ré-affiche avec sa carte EN TÊTE
+  // (le backend Apps Script peut être lent au démarrage — on ne fait pas attendre les actus).
+  const t = await chargerInfosTournoi();
+  if (t && t.publie && __actusBase) {
+    rendreActus(conteneur, [actuTournoi(t)].concat(__actusBase));
+  }
+}
+
+/* Construit et injecte les cartes d'actualités dans le conteneur. */
+function rendreActus(conteneur, actus) {
+  conteneur.innerHTML = actus.map(function (actu) {
+    // "page" = article détaillé (facultatif). S'il est renseigné, la carte devient
+    // cliquable, le titre devient un lien et un bouton apparaît.
+    const page = actu.page && actu.page !== '' ? urlSure(actu.page) : '';
+    const classeCarte = page ? 'carte carte-cliquable' : 'carte';
+    const dataPage = page ? ` data-page="${echapper(page)}"` : '';
+    const titre = page
+      ? `<h3><a href="${echapper(page)}">${echapper(actu.titre)}</a></h3>`
+      : `<h3>${echapper(actu.titre)}</h3>`;
+    const texteBouton = actu.boutonTexte ? actu.boutonTexte : "Lire l'article";
+    const bouton = page
+      ? `<a class="btn btn-primaire" href="${echapper(page)}">${echapper(texteBouton)}</a>`
+      : '';
+    // Image : une URL complète (affiche du tournoi sur Drive) OU un fichier local assets/img.
+    const imgSrc = actu.imageUrl ? echapper(actu.imageUrl) : ('assets/img/' + echapper(actu.image));
+    return `
+      <article class="${classeCarte}"${dataPage}>
+        <img src="${imgSrc}" alt="${echapper(actu.titre)}" loading="lazy" decoding="async">
+        <div class="carte-corps">
+          <span class="carte-date">${echapper(formaterDate(actu.date))}</span>
+          ${titre}
+          <p>${echapper(actu.extrait)}</p>
+          ${bouton}
+        </div>
+      </article>
+    `;
+  }).join('');
+  appliquerDispositionGrille(conteneur, actus.length);
+  initCartesCliquables(conteneur);
+  ajouterAgendaCartes(conteneur, actus);
+}
+
+/* ---------------------------------------------------------
+   PAGE D'ARTICLE DU TOURNOI (tournoi.html de CE site)
+   Remplie dynamiquement depuis les infos saisies dans l'admin du mini-site tournoi.
+   --------------------------------------------------------- */
+async function chargerArticleTournoi() {
+  const zone = document.getElementById('article-tournoi');
+  if (!zone) return; // pas sur la page d'article
+
+  const t = await chargerInfosTournoi();
+  if (!t || !t.publie) {
+    zone.innerHTML = '<section class="section"><div class="conteneur">' +
+      '<p class="message-info">Aucun tournoi en cours pour le moment. ' +
+      'Reviens quand un tournoi sera annoncé !</p></div></section>';
+    return;
+  }
+
+  const nom = t.nom || 'Tournoi Génération R92';
+  document.title = nom + ' | Génération R92';
+  const set = function (id, valeur) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = valeur;
+  };
+  set('art-titre', nom);
+  set('art-fil', nom);
+  set('art-description', t.description || 'Suivez notre tournoi et encouragez nos équipes !');
+  set('art-date', t.date ? formaterDate(t.date) : 'À venir');
+  set('art-lieu', t.lieu || 'À préciser');
+
+  // Affiche (image Drive). Sans affiche, on retire le bloc image.
+  const img = document.getElementById('art-affiche');
+  if (img) {
+    if (t.afficheId) {
+      img.src = urlAffiche(t.afficheId, 1200);
+      img.alt = 'Affiche — ' + nom;
+    } else {
+      const bloc = document.getElementById('art-affiche-bloc');
+      if (bloc) bloc.remove();
+    }
+  }
+
+  // Boutons : agenda (.ics, 2 rappels) + itinéraire « On y va ». Le bouton « Voir le
+  // tournoi en direct » est déjà dans la page (lien fixe). On crée les éléments data-*
+  // puis on laisse initBlocsAgenda/initBlocsItineraire les transformer en boutons.
+  const boutons = document.getElementById('art-boutons');
+  if (boutons) {
+    const agenda = document.createElement('a');
+    agenda.className = 'btn btn-primaire btn-grand';
+    agenda.setAttribute('data-agenda', '');
+    agenda.setAttribute('data-titre', nom);
+    agenda.setAttribute('data-date', t.date || '');
+    agenda.setAttribute('data-heure-debut', t.heureDebut || '09:00');
+    agenda.setAttribute('data-heure-fin', t.heureFin || '');
+    agenda.setAttribute('data-lieu', t.lieu || '');
+    agenda.setAttribute('data-description', t.description || '');
+    agenda.setAttribute('data-rappel', 'les-deux');
+    agenda.textContent = 'Ajouter à mon agenda';
+    boutons.appendChild(agenda);
+
+    const itineraire = document.createElement('a');
+    itineraire.className = 'btn btn-primaire btn-grand btn-itineraire';
+    itineraire.setAttribute('data-itineraire', '');
+    itineraire.setAttribute('data-lieu', t.lieu || '');
+    itineraire.textContent = 'On y va !';
+    boutons.appendChild(itineraire);
+
+    initBlocsAgenda();       // remplace [data-agenda] par le bouton .ics (2 rappels)
+    initBlocsItineraire();   // remplace [data-itineraire] par le bouton « On y va »
   }
 }
 
@@ -680,6 +790,7 @@ function initMenuMobile() {
    Chaque fonction ne s'active que si les éléments concernés existent. */
 document.addEventListener('DOMContentLoaded', function () {
   chargerActus();
+  chargerArticleTournoi();
   chargerProduits();
   chargerSponsors();
   chargerProjets();
