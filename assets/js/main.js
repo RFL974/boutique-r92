@@ -21,12 +21,20 @@ function formaterDate(dateISO) {
 }
 
 /* Applique la disposition d'une grille selon le nombre de cartes :
-   - nombre impair -> "grille-ligne"  (toutes sur une même ligne)
-   - nombre pair   -> "grille-paires" (deux par ligne) */
+   - nombre pair          -> "grille-paires" (deux par ligne)
+   - 1 ou 3 cartes        -> "grille-ligne"  (toutes sur une même ligne, ça reste aéré)
+   - impair >= 5          -> aucune classe    -> grille responsive par défaut (3 colonnes
+                             qui s'aèrent et passent à la ligne), sinon 5+ cartes seraient
+                             écrasées sur une seule ligne. */
 function appliquerDispositionGrille(conteneur, nombre) {
   conteneur.classList.remove('grille-ligne', 'grille-paires');
   if (nombre <= 0) return;
-  conteneur.classList.add(nombre % 2 === 0 ? 'grille-paires' : 'grille-ligne');
+  if (nombre % 2 === 0) {
+    conteneur.classList.add('grille-paires');
+  } else if (nombre <= 3) {
+    conteneur.classList.add('grille-ligne');
+  }
+  // impair >= 5 : on ne met aucune classe -> .grille par défaut (1/2/3 colonnes responsives).
 }
 
 /* Rend cliquables les cartes qui ont une fiche détaillée (attribut data-page).
