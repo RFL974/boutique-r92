@@ -103,3 +103,17 @@ texte ardoise `#3B4A63` ; corps Barlow.
 ## Note environnement
 L'assistant ne peut pas produire de captures ici (pas de Chrome connecté, preview sandboxée) :
 la validation visuelle se fait côté utilisateur (mode responsive du navigateur, desktop + 375px).
+
+## Intégration « Tournoi » (dynamique, via le backend tournoi-r92)
+
+Le mini-site **tournoi-r92** (dépôt séparé, https://github.com/RFL974/tournoi-r92) partage son
+backend Google Apps Script. Quand un tournoi y est **publié** :
+- une **carte** (nom + affiche du tournoi) apparaît **automatiquement** en tête des Actualités ;
+- elle mène à la **page d'article** `tournoi.html` (de CE site), remplie dynamiquement (titre,
+  description, date, lieu, affiche) + bouton « Voir le tournoi en direct », agenda `.ics` (2 rappels)
+  et itinéraire « On y va ».
+
+Tout est géré dans `assets/js/main.js` : `chargerInfosTournoi()` (interroge `?action=getConfig`),
+`actuTournoi()` (la carte), `chargerArticleTournoi()` (la page d'article). L'affiche vient de Google
+Drive via `https://lh3.googleusercontent.com/d/{id}` (⚠️ **pas** `drive.google.com/thumbnail`, qui
+bloque le hotlinking). Rien à saisir dans `actus.json` : la carte est purement dynamique.
