@@ -316,6 +316,45 @@ function initBlocsItineraire() {
 }
 
 /* ---------------------------------------------------------
+   CARTE « TOURNOI » DYNAMIQUE
+   La carte du tournoi apparaît dans les actualités UNIQUEMENT quand le tournoi est
+   publié depuis l'admin du mini-site tournoi (https://rfl974.github.io/tournoi-r92/).
+   Les deux sites partagent le même backend (Google Apps Script) : on lui demande
+   simplement si `tournoi_publie` vaut "oui".
+   --------------------------------------------------------- */
+const TOURNOI_API_URL = 'https://script.google.com/macros/s/AKfycbz_jRSNnFCjJvhUiofO6n3lg41ev8_9UDuvVGB_KDpm_EYZVSgwyi55MG8AfKu2JRQFBA/exec';
+const TOURNOI_PAGE_URL = 'https://rfl974.github.io/tournoi-r92/tournoi.html';
+
+/* Demande au backend du tournoi s'il est publié. Renvoie false en cas de souci
+   (réseau, tournoi absent…) avec un délai max de 4 s pour ne jamais bloquer la page. */
+async function tournoiEstPublie() {
+  try {
+    const ctrl = new AbortController();
+    const minuteur = setTimeout(function () { ctrl.abort(); }, 4000);
+    const reponse = await fetch(TOURNOI_API_URL + '?action=getConfig', { signal: ctrl.signal });
+    clearTimeout(minuteur);
+    if (!reponse.ok) return false;
+    const data = await reponse.json();
+    return String(data && data.global && data.global.tournoi_publie).toLowerCase() === 'oui';
+  } catch (e) {
+    return false;
+  }
+}
+
+/* L'entrée d'actualité « Tournoi » (même format que actus.json). Le champ `page`
+   pointe vers la page publique du tournoi (lien externe autorisé par urlSure). */
+function actuTournoi() {
+  return {
+    titre: '🏉 Tournoi Génération R92 — en direct',
+    date: new Date().toISOString().slice(0, 10),
+    image: 'hero-defense.jpg',
+    extrait: 'Le tournoi est ouvert ! Poules, planning et scores en direct : suis ton équipe et les classements en temps réel.',
+    page: TOURNOI_PAGE_URL,
+    boutonTexte: 'Voir le tournoi'
+  };
+}
+
+/* ---------------------------------------------------------
    CHARGEMENT DES ACTUALITÉS
    Cherche un conteneur avec l'id "liste-actus" ; s'il
    existe (page Actualités), on remplit les cartes.
@@ -325,11 +364,17 @@ async function chargerActus() {
   if (!conteneur) return; // Pas sur la page actus : on ne fait rien.
 
   try {
-    const reponse = await fetch('assets/data/actus.json');
+    // On charge les actus ET l'état de publication du tournoi en parallèle.
     // Si le fichier ne se charge pas (404, ouverture sans serveur…), on bascule
     // dans le catch pour afficher un message clair au lieu de rester figé.
+    const [reponse, tournoiPublie] = await Promise.all([
+      fetch('assets/data/actus.json'),
+      tournoiEstPublie()
+    ]);
     if (!reponse.ok) throw new Error('Réponse HTTP ' + reponse.status);
-    const actus = await reponse.json();
+    let actus = await reponse.json();
+    // Si le tournoi est publié, sa carte passe EN TÊTE des actualités.
+    if (tournoiPublie) actus = [actuTournoi()].concat(actus);
 
     // On construit le HTML de toutes les cartes.
     conteneur.innerHTML = actus.map(function (actu) {
@@ -342,8 +387,9 @@ async function chargerActus() {
       const titre = page
         ? `<h3><a href="${echapper(page)}">${echapper(actu.titre)}</a></h3>`
         : `<h3>${echapper(actu.titre)}</h3>`;
+      const texteBouton = actu.boutonTexte ? actu.boutonTexte : "Lire l'article";
       const bouton = page
-        ? `<a class="btn btn-primaire" href="${echapper(page)}">Lire l'article</a>`
+        ? `<a class="btn btn-primaire" href="${echapper(page)}">${echapper(texteBouton)}</a>`
         : '';
       return `
         <article class="${classeCarte}"${dataPage}>
