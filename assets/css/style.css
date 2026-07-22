@@ -620,6 +620,11 @@ body:has(.filigrane-page) .section:not(.section-sombre) + .section:not(.section-
   object-fit: cover; /* L'image remplit joliment le cadre sans se déformer */
   background: var(--ciel);
 }
+/* Affiche du tournoi (visuel portrait) : recadrage ancré en HAUT pour garder
+   le titre de l'affiche visible dans le bandeau de la carte. */
+.carte img.img-affiche {
+  object-position: center top;
+}
 .carte-corps {
   padding: 20px;
   display: flex;
