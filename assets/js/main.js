@@ -446,9 +446,12 @@ function rendreActus(conteneur, actus) {
       : '';
     // Image : une URL complète (affiche du tournoi sur Drive) OU un fichier local assets/img.
     const imgSrc = actu.imageUrl ? echapper(actu.imageUrl) : ('assets/img/' + echapper(actu.image));
+    // L'affiche du tournoi est un visuel PORTRAIT (titre en haut) : la classe img-affiche
+    // ancre le recadrage en haut (object-position) pour ne pas couper le titre.
+    const classeImg = actu.imageUrl ? ' class="img-affiche"' : '';
     return `
       <article class="${classeCarte}"${dataPage}>
-        <img src="${imgSrc}" alt="${echapper(actu.titre)}" loading="lazy" decoding="async">
+        <img src="${imgSrc}"${classeImg} alt="${echapper(actu.titre)}" loading="lazy" decoding="async">
         <div class="carte-corps">
           <span class="carte-date">${echapper(formaterDate(actu.date))}</span>
           ${titre}
